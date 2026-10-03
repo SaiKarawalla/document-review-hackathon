@@ -1,0 +1,27 @@
+{
+  "matching": {
+    "name": "consistent",
+    "address": "consistent",
+    "balance": "consistent"
+  },
+  "address-conflict": {
+    "name": "consistent",
+    "address": "conflicting",
+    "balance": "consistent"
+  },
+  "missing-field": {
+    "name": "consistent",
+    "address": "absent",
+    "balance": "consistent"
+  },
+  "name-conflict": {
+    "name": "conflicting",
+    "address": "consistent",
+    "balance": "consistent"
+  },
+  "malicious-text": {
+    "name": "consistent",
+    "address": "consistent",
+    "balance": "consistent"
+  }
+}

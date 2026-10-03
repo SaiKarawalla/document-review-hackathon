@@ -9,3 +9,4 @@ uploads/
 artifacts/
 *.log
 .DS_Store
+.venv/
