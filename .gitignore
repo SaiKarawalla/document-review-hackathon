@@ -6,6 +6,7 @@ dist/
 references/screenshots/
 references/ollama/
 references/future-features/
+references/official-forms/
 uploads/
 artifacts/
 *.log

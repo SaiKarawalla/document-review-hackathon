@@ -24,6 +24,8 @@ The current contract excludes literal names, addresses, amounts, dates, account 
 
 Keep Phase 5 for the existing baseline handoff/rehearsal. Phase 6 is explicitly planned for this brief and starts only on its own user instruction. Refresh the handoff/demo after Phase 6 changes. Do one phase at a time; see docs/PLAN.md for the current sequence and acceptance criteria.
 
+Latest user correction adds visa-document review to Phase 6. The two original demo templates are a starting point, not the full intended product. The user delegated the hackathon choice: use Germany's official bilingual Schengen application, fictional adult tourism, and the existing synthetic bank statement. All four reference pages were visually inspected; local reference and structure are recorded in VISA-WORKFLOW.md. Implement a bounded local adapter with fictional fixtures; no visa support exists yet. Distinguish one-document checks from cross-document comparisons; do not silently upload visas/passport pages to AI. No country clarification remains pending. See PLAN.md for the expanded scope and time estimate.
+
 - Define one bounded synthetic purpose and versioned evidence policy; no arbitrary text-based goals passed to AI.
 - Derive purpose predicates locally from supported confirmed fields. Missing, incomparable or conflicting evidence stays unresolved.
 - Show actual included/excluded field counts and reasons with original source references; document what a “field” means.
