@@ -31,7 +31,7 @@ Browser harness initially failed on relative upload paths and local blob classif
 
 New FormBridge_Unique_Feature.pdf copied unchanged locally with matching SHA-256, extracted and visually inspected both pages. Proof Mode/purpose selection, inclusion/exclusion reasons, dynamic counts and the proposed AI Context Firewall recorded in docs/FUTURE-FEATURES.md. Current strict gateway provides a foundation; Proof Mode is not implemented. User no-spending/one-phase rules added to AGENTS/context/decisions.
 
-Elapsed wall time: first source checkpoint 12:58:14 PDT; final verification around 13:54 PDT, approximately 56 minutes since that checkpoint, including user interruptions. Phase 4 source checkpoint commit recorded below after committing. No Phase 4 blocker remains.
+Elapsed wall time: first source checkpoint 12:58:14 PDT; final verification/captures around 13:55 PDT, approximately one hour since that checkpoint, including user interruptions. Phase 4 source checkpoint: **cce1397** (`Complete Phase 4 browser verification and demo polish`). Final desktop capture shows a real validated response at 4.7 seconds. No Phase 4 blocker remains.
 
 ## Phase 5 — not started
 Setup README, verified dependency/license handoff, 90-second demo script/rehearsal and CI remain pending. Wait for a new user instruction. A separate later phase may implement the new Proof Mode brief.
