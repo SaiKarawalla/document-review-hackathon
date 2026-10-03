@@ -1,6 +1,6 @@
 # Current phase plan — 2026-10-03
 
-This file supplements the original master prompt with the user's latest instructions. Continue the existing repository; do not restart. Execute **one phase per user instruction** and stop at its checkpoint. The user plans to compact context, then separately request Phase 5. This documentation update does not start Phase 5 or Phase 6.
+This file supplements the original master prompt with the user's latest instructions. Continue the existing repository; do not restart. Execute **one phase per user instruction** and stop at its checkpoint. The user separately authorized Phase 5 on 2026-10-03; it is now complete. Phase 6 requires a new instruction.
 
 ## Phase status
 
@@ -11,7 +11,7 @@ This file supplements the original master prompt with the user's latest instruct
 | 2 | Strict minimization gateway, exact request preview and hash-bound approval | Complete |
 | 3 | Real downloaded local Ollama model, validated explanations and error/cancel handling | Complete |
 | 4 | Full-flow verification, security boundary checks, desktop/mobile polish | Complete |
-| 5 | Reproducible setup, dependencies/licenses, baseline demo/rehearsal and CI within free allowance | Pending — wait for user instruction |
+| 5 | Reproducible setup, dependencies/licenses, baseline demo/rehearsal and free-only CI preparation | Complete — local checks verified; hosted CI gated off/unverified |
 | 6 | Selected Schengen application review, Proof Mode, purpose-specific AI Context Firewall and verification | Planned — official reference inspected; wait for phase instruction |
 
 Original phases 0–5 remain intact; Phase 6 is explicitly in the plan. Latest user correction: visa paperwork is part of the intended application; the existing two-template demo is only a baseline. Current code does not yet support visas. Broader product features stay future work. The original master prompt's automatic-continuation language is superseded by the user's one-phase rule.
@@ -66,4 +66,4 @@ Any cloud path must use server-side credentials, an allowlisted destination, exp
 
 Read AGENTS.md, docs/PROJECT-CONTEXT.md, docs/DECISIONS.md, docs/PROGRESS.md, this plan and the original docs/MASTER-PROMPT.txt. Read FUTURE-FEATURES.md and VISA-WORKFLOW.md before Phase 6 and HACKATHON-RESOURCES.md before considering sponsor access. Inspect Git status/remotes and actual app/model availability; session IDs alone are not proof a process still runs.
 
-Current baseline: Phase 4 complete for the originally bounded demo, 82 automated tests and 25 browser checks passed, production build passed, actual local Ollama responses verified. This does not mean the newly clarified visa-document requirement is implemented. Private repository: https://github.com/SaiKarawalla/document-review-hackathon. App target: http://127.0.0.1:8787. Next phase is **5, only when the user requests it**; expanded Phase 6 is planned afterward with its own checkpoint and selected Schengen reference ready locally.
+Current baseline: Phase 5 complete for the originally bounded demo, 82 automated tests and 25 browser checks rerun/passed, production build passed, actual local Ollama responses verified. README, DEPENDENCIES and DEMO provide the setup and baseline handoff. This does not mean the newly clarified visa-document requirement is implemented. CI is prepared, manual-only and gated off; free billing allowance was inaccessible with existing token scope, so no hosted run was made. Private repository: https://github.com/SaiKarawalla/document-review-hackathon. App target: http://127.0.0.1:8787. Next phase is **6, only when the user requests it**; selected Schengen reference is ready locally.

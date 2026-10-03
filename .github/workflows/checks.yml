@@ -1,0 +1,28 @@
+name: Baseline checks (manual, free-only gate)
+
+# No push/PR schedule: committing this file does not start a hosted job.
+# Leave FREE_CI_VERIFIED unset until remaining allowance AND a hard stop on
+# paid usage are verified. This variable is an operational gate, not a billing cap.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: baseline-checks
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    if: ${{ vars.FREE_CI_VERIFIED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm ci --no-audit --no-fund
+      - run: npm run check
+      # No caches/artifact uploads, model downloads, API keys or real documents.

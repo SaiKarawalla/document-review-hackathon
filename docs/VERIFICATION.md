@@ -34,4 +34,20 @@ Browser verification uses `node scripts/browser-smoke.mjs --ai` against the runn
 
 Only client-intake-v1 and bank-statement-v1 synthetic text-layer templates are supported. No arbitrary PDFs, OCR, document authenticity, official eligibility decision, durable case storage, accounts or enterprise connections. Source page/excerpt references are real; no guessed bounding-box highlight. Unit timeout tests use controlled responses/worker instances; they do not benchmark every hostile PDF or OS resource scenario. App minimization cannot control unrelated host processes or browser extensions.
 
-Phase 5 setup documentation, dependency/license handoff, rehearsal and CI remain pending. Future Proof Mode and its purpose-specific policy are saved in FUTURE-FEATURES.md. Per the user's latest instruction, stop after Phase 4 and wait for a new phase instruction.
+At the Phase 4 checkpoint the handoff remained pending. The following Phase 5 checks supersede that phase-status note; the Phase 4 observations above remain historical evidence.
+
+## Phase 5 rerun and handoff — 2026-10-03
+
+User separately authorized Phase 5. `npm ci --no-audit --no-fund` successfully reinstalled 55 packages from the unchanged lockfile. npm reported pending esbuild/fsevents install-script approval warnings; no blanket approval was granted, and the subsequent real typecheck/tests/build passed without it. Node 26.5.0/npm 11.17.0 match the README; another OS or clean teammate machine was not tested.
+
+After reinstall, `npm run check` passed: **82 tests in five files**, TypeScript and production build. The existing production server was stopped using its own session and relaunched with the documented `npm start`, serving the latest dist at 127.0.0.1:8787. No runtime application code changed in this phase.
+
+`node scripts/browser-smoke.mjs --ai` reran the actual production baseline: **25 checks passed**, a real Ollama explanation validated, **33** captured application requests confined to loopback/browser-local evidence, **5413** preview bytes, zero checked page errors or reset/loaded accessibility violations, no 390px horizontal overflow. Local captures are ignored artifacts, not committed user documents. Browser latency varies and is not a human rehearsal duration.
+
+`node --import tsx scripts/model-smoke.ts address-conflict` independently passed against actual local Ollama at **5376 ms**; same approved bytes/hash, GET tags and POST generate only, 14 supported source field records, zero literal field values and six derived findings. Request SHA-256 remains `8aadc399c30a838427c5dbc6de8e35931b00acd7b2a3824d0bf7cdfea14a7179`. `ollama list` confirms qwen2.5:1.5b, ID prefix 65ec06548149, 986 MB; live version endpoint confirms 0.35.1.
+
+`node scripts/offline-smoke.mjs` passed a **controlled browser health-unavailable** test with actual parsed synthetic PDFs and real comparison/rule-summary code. It verifies explicit “Rule-based summary — AI unavailable” and “No model response” labels, retained conflict, zero `/api/send` attempts and reset clearing the result; restored browser fetch/live health. This is a test double for connection health, **not** an actual daemon outage or an AI output. The first attempt was sandbox-blocked on npm registry DNS; approved rerun passed. Source screenshot was visually inspected for the correct labels/readability.
+
+Prepared CI YAML parses locally and has manual dispatch only, an unset FREE_CI_VERIFIED job guard, official action revisions pinned from GitHub, and no model/download, cache/artifact or credential step. Read-only repository variables check confirms the gate is absent. Billing usage returned HTTP 404/missing user token scope, so no scope expansion, hosted job, paid usage or billing changes were made. Hosted Linux CI is unverified; local tests are the verified check.
+
+README, DEPENDENCIES and DEMO document the actual baseline, limitations, source references and 90-second script/Q&A. No measured legal validity, universal accuracy/privacy percentage, official visa support, mobile inference or timed human rehearsal is claimed. Phase 6 remains separate, unimplemented, with the official reference and feature brief recorded in VISA-WORKFLOW/FUTURE-FEATURES.
