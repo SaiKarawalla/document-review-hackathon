@@ -11,7 +11,7 @@ describe('Actual PDF fixtures, predeclared outcomes', () => {
     expect(docs[0].fields.name?.page).toBe(1);
     expect(docs[1].fields.account?.excerpt).toContain('DEMO-ACCT-0042');
   });
-  it.each([['unsupported-version.pdf', /Unsupported template/], ['scanned.pdf', /no readable text layer/], ['too-many-pages.pdf', /Too many pages/], ['malformed.pdf', /Invalid PDF/]])('rejects %s', async (file, message) => { await expect(fixture(file as string)).rejects.toThrow(message as RegExp); });
+  it.each([['unsupported-version.pdf', /Unsupported template/], ['scanned.pdf', /no readable text layer/], ['too-many-pages.pdf', /Too many pages/], ['malformed.pdf', /Invalid PDF/], ['encrypted.pdf', /password/i], ['encrypted-blank-password.pdf', /Encrypted PDFs/]])('rejects %s', async (file, message) => { await expect(fixture(file as string)).rejects.toThrow(message as RegExp); });
   it('filename cannot set findings', async () => {
     const docs = await pair('address-conflict'); docs.forEach(d => d.filename = 'matching.pdf');
     expect(compareDocuments(docs).find(f => f.id === 'address')?.status).toBe('conflicting');

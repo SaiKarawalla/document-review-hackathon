@@ -1,6 +1,7 @@
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { LIMITS, parseLines, type SourceLine } from './documents';
 export async function extractDocument(pdf: PDFDocumentProxy, id: string, filename: string) {
+  if (await pdf.getPermissions() !== null) throw new Error('Encrypted PDFs are not supported. Export an unencrypted text-layer PDF.');
   if (pdf.numPages > LIMITS.pages) throw new Error('Too many pages. The limit is 10 pages per PDF.');
   const lines: SourceLine[] = []; let length = 0;
   for (let page = 1; page <= pdf.numPages; page++) {

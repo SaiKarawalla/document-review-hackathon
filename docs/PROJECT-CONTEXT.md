@@ -8,8 +8,12 @@ Judge 1 (user-reported conversation): liked workflow and future enterprise conne
 
 Screenshots visually inspected: two prize slides, a perks slide, rubric slide. Rubric: execution 20%, usefulness 20%, innovation 15%, completeness 15%, UX 10%, presentation 10%, judge preference 10%. See SCREENSHOT-NOTES.md.
 
-User explicitly authorizes private GitHub repository creation when authenticated, project setup, local Ollama integration and continued implementation/testing. Routine decisions need no checkpoint approval. No public deployment requested. Use local-only Ollama; optional cloud cut first. Preserve sources and durable records; communicate short updates.
+User explicitly authorizes private GitHub repository creation when authenticated, project setup, local Ollama integration and continued implementation/testing. Routine decisions need no checkpoint approval. No public deployment requested. Use local-only Ollama. Preserve sources and durable records; communicate short updates.
 
-Environment: actual user's macOS arm64 laptop, Node 26.5.0, npm 11.17.0, 8 GiB RAM. Empty initial workspace. Active GitHub account SaiKarawalla authenticated via keyring outside sandbox. Initial Ollama executable absent and port 11434 unreachable; bounded setup pending.
+Latest user steering, 2026-10-03: finish Phase 4 without restarting and show the actual application. From now on work ONE phase at a time and stop at the checkpoint; this supersedes the master prompt's automatic continuation. Do not spend money or enable paid usage. If free credits expire, stop that service and use the local fallback. No sponsor cloud service or paid API is enabled; the app uses the downloaded local Ollama model.
+
+New attached brief: FormBridge_Unique_Feature.pdf (two pages), read and visually inspected. Preserve the original locally and record Proof Mode plus AI Context Firewall in docs/FUTURE-FEATURES.md for later feature work. No new purpose-selection feature or brand change is authorized for Phase 4. The current app already enforces structured minimization; the future purpose-driven evidence policy must preserve or explicitly revise its strict data boundary, with new preview/approval and tests.
+
+Environment: actual user's macOS arm64 laptop, Node 26.5.0, npm 11.17.0, 8 GiB RAM. Empty initial workspace. Active GitHub account SaiKarawalla authenticated via keyring outside sandbox. Ollama 0.35.1 installed; qwen2.5:1.5b downloaded and real inference verified. Production app is running at http://127.0.0.1:8787; local-only model endpoint at 127.0.0.1:11434. Private repository: https://github.com/SaiKarawalla/document-review-hackathon.
 
 Sponsor perks not activated: n8n, Featherless, ElevenLabs, Azure/Microsoft/AMD/OpenAI, .xyz, Kariaa. Do not add features to chase categories. Future only: arbitrary PDFs, OCR, reminders, autofill, voice, accounts/storage/team permissions, integrations and enterprise compliance.

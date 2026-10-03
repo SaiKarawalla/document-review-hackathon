@@ -69,6 +69,17 @@ for case in CASES:
     for kind in ['intake', 'statement']:
         pdf(ROOT / f'{case}-{kind}.pdf', kind, case)
 pdf(ROOT / 'unsupported-version.pdf', 'intake', version='v2')
+from pypdf import PdfReader, PdfWriter
+writer = PdfWriter()
+writer.append(PdfReader(str(ROOT / 'matching-intake.pdf')))
+writer.encrypt('synthetic-only-password')
+with (ROOT / 'encrypted.pdf').open('wb') as encrypted:
+    writer.write(encrypted)
+writer = PdfWriter()
+writer.append(PdfReader(str(ROOT / 'matching-intake.pdf')))
+writer.encrypt('', 'synthetic-owner-password')
+with (ROOT / 'encrypted-blank-password.pdf').open('wb') as encrypted:
+    writer.write(encrypted)
 
 # An image-only synthetic scan: image text is not a text layer.
 from PIL import Image, ImageDraw
@@ -85,4 +96,4 @@ for page in range(11):
 many.save()
 (ROOT / 'malformed.pdf').write_bytes(b'%PDF-1.7\nmalformed synthetic fixture')
 (ROOT / 'expected.json').write_text(json.dumps(CASES, indent=2) + '\n')
-print('Generated 10 paired PDFs plus unsupported, scanned, page-limit and malformed fixtures.')
+print('Generated 10 paired PDFs plus unsupported, scanned, page-limit, malformed and two encrypted fixtures.')

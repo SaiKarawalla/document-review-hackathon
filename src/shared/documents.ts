@@ -94,7 +94,7 @@ export function compareDocuments(documents: ReviewDocument[]): Finding[] {
     const missing = fields.filter(f => f.status === 'absent').map(f => f.field);
     const ambiguous = fields.filter(f => f.status === 'needs_review');
     const reversedPeriod = id === 'statement_fields' && !missing.includes('period_start') && !missing.includes('period_end')
-      && !ambiguous.length && doc.fields.period_start!.value > doc.fields.period_end!.value;
+      && !ambiguous.length && doc.fields.period_start!.value.trim() > doc.fields.period_end!.value.trim();
     findings.push({ id, label: id === 'intake_fields' ? 'Intake required fields' : 'Statement required fields',
       status: missing.length ? 'absent' : ambiguous.length || reversedPeriod ? 'needs_review' : 'consistent',
       explanation: missing.length ? `Sample workflow fields missing: ${missing.map(k => LABELS[k]).join(', ')}.`
@@ -105,7 +105,7 @@ export function compareDocuments(documents: ReviewDocument[]): Finding[] {
   const balanceEvidence = [a.balance!, b.balance!, a.account!, b.account!, a.currency!, b.currency!, a.as_of!, b.period_start!, b.period_end!];
   const comparable = balanceEvidence.every(f => f.status === 'extracted')
     && a.account!.normalized === b.account!.normalized && a.currency!.normalized === b.currency!.normalized
-    && a.as_of!.value === b.period_end!.value && b.period_start!.value <= b.period_end!.value;
+    && a.as_of!.value.trim() === b.period_end!.value.trim() && b.period_start!.value.trim() <= b.period_end!.value.trim();
   const cents = (v: string) => { const [whole, fraction = ''] = v.split('.'); return BigInt(whole) * 100n + BigInt(fraction.padEnd(2, '0')); };
   const status = comparable ? cents(a.balance!.value.trim()) === cents(b.balance!.value.trim()) ? 'consistent' : 'conflicting' : 'not_comparable';
   findings.push({ id: 'balance', label: 'Declared / closing balance', status,

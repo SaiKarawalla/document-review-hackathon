@@ -5,10 +5,20 @@ import { contextSchema, minimize, ruleSummary, type ReducedContext } from '../sr
 import { compareDocuments } from '../src/shared/documents';
 import { pair } from './helpers';
 import type { AddressInfo } from 'node:net';
+import { request as httpRequest } from 'node:http';
+// Raw HTTP is required here: Node's fetch rewrites Host to match the URL.
+function fetch(url: string, init: { method?: string; headers?: Record<string,string>; body?: string } = {}): Promise<Response> {
+  return new Promise((resolve,reject)=>{
+    const req=httpRequest(url,{method:init.method ?? 'GET',headers:init.headers},res=>{
+      const chunks:Buffer[]=[];res.on('data',chunk=>chunks.push(chunk));
+      res.on('end',()=>resolve(new Response(res.statusCode===204?null:Buffer.concat(chunks),{status:res.statusCode,headers:res.headers as Record<string,string>})));
+    });req.on('error',reject);req.end(init.body);
+  });
+}
 describe('HTTP request boundary',()=>{
   let ctx:ReducedContext;let address:string;
   const log=vi.spyOn(console,'log');
-  const transport=vi.fn<typeof fetch>(async(url)=>String(url).endsWith('/api/tags')?Response.json({models:[{name:'qwen2.5:1.5b'}]}):Response.json({done:true,response:JSON.stringify(ruleSummary(ctx))}));
+  const transport=vi.fn<typeof globalThis.fetch>(async(url)=>String(url).endsWith('/api/tags')?Response.json({models:[{name:'qwen2.5:1.5b'}]}):Response.json({done:true,response:JSON.stringify(ruleSummary(ctx))}));
   const server=createApp(new ModelGateway(undefined,transport));
   const headers={'Host':'127.0.0.1:8787','Origin':'http://127.0.0.1:5173','Content-Type':'application/json','X-Document-Review':'1'};
   beforeAll(async()=>{const docs=await pair('malicious-text');ctx=minimize(compareDocuments(docs),docs);await new Promise<void>(resolve=>server.listen(0,'127.0.0.1',resolve));address=`http://127.0.0.1:${(server.address() as AddressInfo).port}`;});

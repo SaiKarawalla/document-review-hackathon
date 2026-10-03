@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState, type DragEvent } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type DragEvent } from 'react';
 import { ArrowRight, Check, CheckCircle2, ChevronDown, FileText, Fingerprint, LockKeyhole, RotateCcw, ShieldCheck, Upload, X, AlertTriangle, Eye, LoaderCircle, CircleHelp } from 'lucide-react';
 import { compareDocuments, correctField, LABELS, type Field, type FieldName, type Finding, type FindingStatus, type ReviewDocument } from './shared/documents';
 import { minimize, ruleSummary, type RequestPreview, type ReviewSummary } from './shared/request';
 import { parsePdf } from './parsePdf';
-import { PdfPage } from './PdfPage';
+const PdfPage = lazy(() => import('./PdfPage').then(module => ({ default: module.PdfPage })));
 const API = import.meta.env.DEV ? 'http://127.0.0.1:8787' : '';
 const CASES = [{ id: 'address-conflict', label: 'Address conflict', detail: 'Two addresses, one review' }, { id: 'matching', label: 'Matching documents', detail: 'All comparable checks agree' }, { id: 'missing-field', label: 'Missing information', detail: 'Statement address left blank' }, { id: 'malicious-text', label: 'Embedded instruction', detail: 'Untrusted notes stay local' }];
 const STATUS_LABEL: Record<FindingStatus, string> = { consistent: 'Consistent', conflicting: 'Conflict', absent: 'Missing', needs_review: 'Needs review', not_comparable: 'Not comparable' };
@@ -46,7 +46,7 @@ export default function App() {
     if (!files.length) return;
     if (current.length + files.length > 2) { setError('A case supports two PDFs. Reset or load a demo pair to start a new case.'); return; }
     invalidate(); setError(''); setBusy('Parsing PDFs locally…'); const rev = revision.current;
-    const controller = new AbortController(); operation.current = controller; const added: LocalDocument[] = [];
+    const controller = new AbortController(); operation.current = controller; const added: LocalDocument[] = []; let committed = false;
     try {
       for (const file of files) {
         const doc = await parsePdf(file, controller.signal);
@@ -55,10 +55,10 @@ export default function App() {
         added.push({ ...doc, url: URL.createObjectURL(file) });
       }
       if (replace) docsRef.current.forEach(d => URL.revokeObjectURL(d.url));
-      replaceDocs([...current, ...added]);
+      replaceDocs([...current, ...added]); committed = true;
       setNotice('PDFs parsed in this browser. No document content was uploaded.');
-    } catch (e) { added.forEach(d => URL.revokeObjectURL(d.url)); if (rev === revision.current) setError((e as Error).message); }
-    finally { if (rev === revision.current) { setBusy(''); operation.current = undefined; } }
+    } catch (e) { if (rev === revision.current) setError((e as Error).message); }
+    finally { if (!committed) added.forEach(d => URL.revokeObjectURL(d.url)); if (rev === revision.current) { setBusy(''); operation.current = undefined; } }
   }
   async function loadDemo() {
     if (busy) return;
@@ -71,23 +71,22 @@ export default function App() {
       }));
       if (controller.signal.aborted || rev !== revision.current) return;
       setBusy(''); operation.current = undefined;
-      // loadFiles checks the render's busy closure; pass through a direct helper on the next task.
       await loadParsedDemo(files);
     } catch (e) { if (rev === revision.current) { setError((e as Error).message); setBusy(''); } }
   }
   async function loadParsedDemo(files: File[]) {
     invalidate(); setBusy('Parsing synthetic PDFs locally…'); const rev = revision.current; const controller = new AbortController(); operation.current = controller;
-    const added: LocalDocument[] = [];
+    const added: LocalDocument[] = []; let committed = false;
     try {
       for (const file of files) {
         const doc = await parsePdf(file, controller.signal);
         if (controller.signal.aborted || rev !== revision.current) return;
         added.push({ ...doc, url: URL.createObjectURL(file) });
       }
-      docsRef.current.forEach(d => URL.revokeObjectURL(d.url)); replaceDocs(added); setEvidence(undefined); setEdit(undefined);
+      docsRef.current.forEach(d => URL.revokeObjectURL(d.url)); replaceDocs(added); committed = true; setEvidence(undefined); setEdit(undefined);
       setNotice('Synthetic PDFs parsed locally. Findings come from their contents.');
-    } catch (e) { added.forEach(d => URL.revokeObjectURL(d.url)); if (rev === revision.current) setError((e as Error).message); }
-    finally { if (rev === revision.current) { setBusy(''); operation.current = undefined; } }
+    } catch (e) { if (rev === revision.current) setError((e as Error).message); }
+    finally { if (!committed) added.forEach(d => URL.revokeObjectURL(d.url)); if (rev === revision.current) { setBusy(''); operation.current = undefined; } }
   }
   function saveEdit() {
     if (!edit) return;
@@ -115,6 +114,7 @@ export default function App() {
   function source(field: Field) { const doc = docs.find(d => d.id === field.documentId); if (doc) setEvidence({ doc, field }); }
   function findingCard(f: Finding) {
     return <article className={`finding ${f.status}`} key={f.id}><div className="finding-heading"><span className="status-icon"><StatusIcon status={f.status} /></span><h3>{f.label}</h3><span className={`badge ${f.status}`}>{STATUS_LABEL[f.status]}</span></div><p>{f.explanation}</p>
+      {f.status !== 'consistent' && <div className="source-pair">{f.evidence.slice(0,2).map((field,i)=><div key={field.documentId+field.field+i}><span>{field.template === 'client-intake-v1' ? 'INTAKE' : 'STATEMENT'}{field.page ? ` · PAGE ${field.page}` : ' · ABSENT'}</span><blockquote>{field.excerpt}</blockquote>{field.corrected && <p>Confirmed correction: {field.value || 'Not supplied'}</p>}</div>)}</div>}
       <div className="evidence-links">{f.evidence.slice(0, 2).map((field, i) => <button className="text-button" key={field.documentId + field.field + i} onClick={() => source(field)}><Eye size={14} />{field.template === 'client-intake-v1' ? 'Intake' : 'Statement'}{field.page ? ` · p. ${field.page}` : ' · field absent'}<ArrowRight size={13} /></button>)}</div></article>;
   }
   return <><header className="header"><a className="brand" href="#main"><span className="brand-icon"><FileText size={21}/></span>Document Review<span className="brand-divider"/><span className="workspace-label">Local workspace</span></a><div className="header-actions"><span className="local-pill"><span className="dot"/>Browser-local documents</span><button className="reset" onClick={reset}><RotateCcw size={15}/>Reset case</button></div></header>
@@ -139,5 +139,5 @@ export default function App() {
     {result && <article className="summary-result"><div className="summary-title"><CheckCircle2 size={19}/><h3>{result.source === 'ollama' ? 'Local AI explanation' : 'Rule-based summary — AI unavailable'}</h3></div><p>{result.summary.overview}</p>{result.summary.findings.filter(f => issues.length === 0 || issues.some(i => i.id === f.id)).map(f => <div className="summary-finding" key={f.id}><strong>{findings.find(i => i.id === f.id)?.label}</strong><p>{f.explanation}</p><span>{f.follow_up}</span></div>)}<div className="summary-meta">{result.source === 'ollama' ? `Real Ollama response · ${result.model} · ${((result.latencyMs ?? 0) / 1000).toFixed(1)} s · validated` : 'Generated by comparison rules. No model response.'}</div>{result.requestHash && <details><summary>Request receipt</summary><code className="hash">{result.requestHash}</code></details>}</article>}
     {context && health && !health.available && !busy && <button className="text-button backup-button" onClick={fallback}>Show rule-based summary (AI unavailable)<ArrowRight size={14}/></button>}
   </section></div><footer><span><LockKeyhole size={13}/>No accounts. No stored cases. Reset clears this workspace.</span><span>Consistency review · human decisions</span></footer></main>
-  <dialog ref={dialog} className="evidence-dialog" onCancel={() => setEvidence(undefined)} onClose={() => setEvidence(undefined)}>{evidence && <><div className="dialog-heading"><div><span className="eyebrow">LOCAL SOURCE EVIDENCE</span><h2>{evidence.doc.template === 'client-intake-v1' ? 'Client intake' : 'Bank statement'}{evidence.field && ` · ${LABELS[evidence.field.field]}`}</h2></div><button className="icon-button" aria-label="Close source evidence" onClick={() => setEvidence(undefined)}><X size={20}/></button></div><div className="dialog-content"><div className="source-notes"><span className="badge consistent">{evidence.doc.template}</span><p>Original PDF · page {evidence.field?.page ?? 1}</p>{evidence.field && <><h3>Extracted source passage</h3><blockquote>{evidence.field.excerpt}</blockquote>{evidence.field.page === null && <p>No source location exists for an absent field.</p>}<h3>Value used for comparison</h3><p className="confirmed-display">{evidence.field.value || 'Not supplied'}</p><p>{evidence.field.corrected ? 'User corrected value. The original source passage is unchanged.' : evidence.field.confirmed ? 'Confirmed by the reviewer.' : `Extraction: ${evidence.field.status.replace('_', ' ')} · not yet confirmed.`}</p><button className="secondary" onClick={() => { setEdit({ id: evidence.doc.id, field: evidence.field!.field, value: evidence.field!.value }); setEvidence(undefined); }}>Review this field</button></>}<p className="workflow-note">Page and excerpt are real source references. No bounding-box highlight is inferred.</p></div><PdfPage url={evidence.doc.url} page={evidence.field?.page ?? 1}/></div></>}</dialog></>;
+  <dialog ref={dialog} aria-labelledby="source-title" className="evidence-dialog" onCancel={() => setEvidence(undefined)} onClose={() => setEvidence(undefined)}>{evidence && <><div className="dialog-heading"><div><span className="eyebrow">LOCAL SOURCE EVIDENCE</span><h2 id="source-title">{evidence.doc.template === 'client-intake-v1' ? 'Client intake' : 'Bank statement'}{evidence.field && ` · ${LABELS[evidence.field.field]}`}</h2></div><button className="icon-button" aria-label="Close source evidence" onClick={() => setEvidence(undefined)}><X size={20}/></button></div><div className="dialog-content"><div className="source-notes"><span className="badge consistent">{evidence.doc.template}</span><p>Original PDF · page {evidence.field?.page ?? 1}</p>{evidence.field && <><h3>Extracted source passage</h3><blockquote>{evidence.field.excerpt}</blockquote>{evidence.field.page === null && <p>No source location exists for an absent field.</p>}<h3>Value used for comparison</h3><p className="confirmed-display">{evidence.field.value || 'Not supplied'}</p><p>{evidence.field.corrected ? 'User corrected value. The original source passage is unchanged.' : evidence.field.confirmed ? 'Confirmed by the reviewer.' : `Extraction: ${evidence.field.status.replace('_', ' ')} · not yet confirmed.`}</p><button className="secondary" onClick={() => { setEdit({ id: evidence.doc.id, field: evidence.field!.field, value: evidence.field!.value }); setEvidence(undefined); }}>Review this field</button></>}<p className="workflow-note">Page and excerpt are real source references. No bounding-box highlight is inferred.</p></div><Suspense fallback={<p role="status">Loading local PDF viewer…</p>}><PdfPage url={evidence.doc.url} page={evidence.field?.page ?? 1}/></Suspense></div></>}</dialog></>;
 }
