@@ -32,3 +32,13 @@ Keep Phase 5 for the existing handoff/rehearsal. Consider a separate Phase 6 for
 - Use local Ollama only. No paid usage or billing activation. If a future free service exhausts credits, stop it and use the local fallback.
 
 This brief is saved for planning; it is not permission to start another phase on the current request.
+
+## Post-hackathon option: cloud AI
+
+Decision recorded 2026-10-03: keep the hackathon demo on real local Ollama; optional cloud explanations belong in future-work presentation notes. Cloud integration is not implemented and is not part of the remaining Phase 5 handoff. Its later phase number is undecided; do not merge it into the proposed Proof Mode phase by default.
+
+Possible future capability: user-selected local or cloud explanation, with the same strict minimization boundary, explicit provider/destination display, exact serialized request preview, server-side credentials and validated output. Raw PDFs, source excerpts and literal identifiers must remain excluded. Switching providers must create a new preview and require fresh approval; never silently switch when local/cloud fails.
+
+The no-spending rule persists: no billing activation or paid usage. If a future free service exhausts credits, stop using it and offer the local fallback with a fresh approved request. Select and verify a provider's actual limits before claiming credit enforcement works. No provider account, credentials, free-credit offer or quota behavior is assumed available today.
+
+Judge-facing future-work point: “Optional cloud explanations using the same minimized, user-approved request, while keeping local AI as the default.” Label it planned, not demonstrated. Current local-only configuration follows [Ollama's official cloud-disable documentation](https://docs.ollama.com/faq#how-do-i-disable-ollama-cloud-features).

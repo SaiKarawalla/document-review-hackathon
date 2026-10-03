@@ -10,4 +10,6 @@ At each phase: update context/decisions/progress, record actual verification and
 
 Budget: do not spend money, enable paid usage, add billing, or upgrade services. If free credits run out, stop using that service and use the local Ollama/rule-based fallback. No sponsor/cloud service is currently enabled.
 
+Hackathon provider decision: keep the demo local-only. Optional cloud AI is roadmap work after the hackathon, not a remaining requirement for this prototype or Phase 5. Record future capabilities honestly; do not start cloud integration without a later user instruction.
+
 Future feature brief: read docs/FUTURE-FEATURES.md before later feature work. Proof Mode and the AI Context Firewall proposal are deferred beyond Phase 4; do not weaken the current enum-only request boundary or silently send identifiers to implement them.
