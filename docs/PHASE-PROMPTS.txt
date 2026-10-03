@@ -1,0 +1,36 @@
+PHASE CHECKPOINTS AND OPTIONAL FOLLOW-UP PROMPTS
+
+The master prompt already tells Codex to continue through all phases. You do not have to paste these one at a time. Use them if a session stops or you want a specific checkpoint. Read the full master prompt before acting; these short prompts do not replace its security or scope requirements.
+
+PHASE 0 — SETUP AND DURABLE CONTEXT — 20 MINUTES
+Prompt: Read the master prompt, project context, existing repository instructions, and all four screenshots. Save the screenshot originals locally, record redacted notes, create/merge the durable context files, and establish local Git plus a private GitHub repository when authenticated access permits. Check the actual demo environment and Ollama availability. Record blockers and continue to the comparison feature.
+Done when: screenshots are accounted for honestly, project scope is saved, repository status is known, and the next session has clear resume instructions. Do not claim GitHub creation if only local Git exists.
+
+PHASE 1 — REAL DOCUMENT COMPARISON — 65 MINUTES
+Prompt: Implement the two supported synthetic PDF templates, browser-local parsing, evidence-linked fields, deterministic comparisons, and editable confirmation. Build matching, conflict, and missing-field demo pairs. Reject unsupported/scanned/oversize inputs clearly. Demonstrate the findings came from actual PDF contents. Update progress and commit.
+Done when: a real intake PDF and a differently structured statement PDF produce the expected findings and corrections change those findings.
+
+PHASE 2 — EXACT AI REQUEST AND PRIVACY BOUNDARY — 45 MINUTES
+Prompt: Implement the structured allowlist, validated local backend, and single model gateway. Show the full final model request and destination; bind approval to the exact serialized request and invalidate it after edits. Keep raw documents, source excerpts, names, account numbers, and addresses out of model requests. Verify the preview/request match. Update progress and commit.
+Done when: an intercepted outbound request matches the approved preview and excluded values are absent.
+
+PHASE 3 — OLLAMA SUMMARY — 45 MINUTES
+Prompt: Connect and test local-only Ollama on the actual demo host using a suitable downloaded local model. Generate short schema-validated explanations tied to existing finding IDs. Add timeout/cancel/unavailable states. Preserve the 15-minute troubleshooting cap. Any cloud alternative must be explicitly selected and minimized; never silently upload raw documents. Update progress and commit.
+Done when: a real model produces a validated summary, or a concrete environment blocker and honestly labeled fallback are documented. An unavailable state does not count as a successful AI test.
+
+PHASE 4 — VERIFY AND POLISH — 55 MINUTES
+Prompt: Exercise the complete UI with real fixtures, corrections, source evidence, preview, and actual AI output. Check malformed/unsupported inputs, malicious document text, unknown model finding IDs, timeouts, and stale summaries. Check network requests and content logging. Improve readability and error states, then report actual test results and failures. Update progress and commit.
+Done when: the core demo works and the records distinguish measured protections from untested claims.
+
+PHASE 5 — FINAL HANDOFF — 40 MINUTES
+Prompt: Finish README setup, a 90-second demo script, judge Q&A, a truthful feature-status table, and minimal CI if feasible. Run the build and necessary checks, commit and push if access permits, then give the verified repository URL, start commands, test results, and remaining limitations. Keep public deployment outside the core scope.
+Done when: another teammate can follow the setup instructions and reproduce the actual demo. Don't publish a success claim for a broken or simulated feature.
+
+FOUR-HOUR MODE
+Keep Phases 0–3 as above. Reduce Phase 4 to 35 minutes and Phase 5 to 30 minutes. Drop optional cloud mode, extended evaluation, and nonessential polish. Preserve real comparison, exact-request preview, and end-to-end verification.
+
+RESUME AFTER A NEW CHAT OR INTERRUPTION
+Prompt: Continue the existing project. Read AGENTS.md, docs/PROJECT-CONTEXT.md, docs/DECISIONS.md, docs/PROGRESS.md, and the original master prompt first. Inspect Git status and the current implementation. State the current phase and next unfinished task in two sentences, then resume. Do not restart the project, create duplicate repos, drop Ollama without recording its blocker, or add features from discarded early ideas. Update the progress file when finished.
+
+WHEN CODEX DRIFTS INTO EXTRA FEATURES
+Prompt: Return to the two core capabilities in the master prompt: supported-document comparison and the exact minimized AI-request preview with a short summary. Defer accounts, OCR, voice, reminders, arbitrary documents, and integrations. Complete and verify the existing demo before expanding scope.
