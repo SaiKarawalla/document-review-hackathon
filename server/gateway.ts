@@ -1,6 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { z } from 'zod';
-import { contextSchema, summarySchema, validateSummary, EXPLANATIONS, FOLLOW_UPS, OVERVIEWS, type ReducedContext, type RequestPreview } from '../src/shared/request';
+import { contextSchema, validateSummary, EXPLANATIONS, FOLLOW_UPS, OVERVIEWS, type ReducedContext, type RequestPreview } from '../src/shared/request';
 export const OLLAMA = 'http://127.0.0.1:11434';
 export const DESTINATION = OLLAMA + '/api/generate';
 const SYSTEM = 'You assist a human document reviewer. You receive only reduced consistency facts for a synthetic case. Deterministic statuses are authoritative. Return JSON only. Choose exact sentences from the allowed vocabulary appropriate to each status. Include every existing finding ID exactly once. Do not claim document authenticity, fraud, legal validity or eligibility. Do not invent values, tools, actions or findings.';
@@ -20,9 +19,19 @@ export class ModelGateway {
     if (this.pending.size >= 16) throw new GatewayError(429, 'Too many pending previews. Discard one or wait for expiry.');
     const body = {
       model: this.model, system: SYSTEM,
-      prompt: JSON.stringify({ instruction: 'Explain these findings using the allowed sentences. Select the overview based on whether every check is consistent. Select follow-up appropriate to each status.',
-        context, vocabulary: { explanations: EXPLANATIONS, follow_ups: FOLLOW_UPS, overviews: OVERVIEWS } }),
-      format: z.toJSONSchema(summarySchema), stream: false,
+      prompt: JSON.stringify({ instruction: 'Explain each finding in context order. Include all six unique IDs exactly once. Choose only sentences allowed for that ID. The response schema enforces authoritative statuses.',
+        context, choices: context.findings.map(f => ({ id: f.id, explanation: EXPLANATIONS[f.status], follow_up: FOLLOW_UPS[f.status] })) }),
+      format: {
+        type: 'object', additionalProperties: false, required: ['overview', 'findings'],
+        properties: {
+          overview: { type: 'string', enum: [context.findings.every(f => f.status === 'consistent') ? OVERVIEWS[1] : OVERVIEWS[0]] },
+          findings: { type: 'array', minItems: 6, maxItems: 6, items: { anyOf: context.findings.map(f => ({
+            type: 'object', additionalProperties: false, required: ['id','explanation','follow_up'],
+            properties: { id: { type: 'string', enum: [f.id] },
+              explanation: { type: 'string', enum: EXPLANATIONS[f.status] }, follow_up: { type: 'string', enum: FOLLOW_UPS[f.status] } },
+          })) } },
+        },
+      }, stream: false,
       options: { temperature: 0, seed: 42, num_ctx: 4096, num_predict: 768 }, keep_alive: '5m',
     };
     const serializedBody = JSON.stringify(body);

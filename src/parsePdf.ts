@@ -12,7 +12,11 @@ export async function parsePdf(file: File, signal: AbortSignal, timeout = LIMITS
     const cancel = () => { finish(); reject(new Error('Parsing cancelled.')); };
     const timer = setTimeout(() => { finish(); reject(new Error('PDF parsing timed out. The parser was stopped; try a simpler PDF.')); }, timeout);
     signal.addEventListener('abort', cancel, { once: true });
-    worker.onmessage = event => { finish(); event.data.error ? reject(new Error(event.data.error)) : resolve(event.data.document); };
+    worker.onmessage = event => {
+      // PDF.js may post its own initialization handshake in a worker. Only our result completes parsing.
+      if (event.data?.type !== 'review-result') return;
+      finish(); event.data.error ? reject(new Error(event.data.error)) : resolve(event.data.document);
+    };
     worker.onerror = () => { finish(); reject(new Error('Could not parse this PDF. Try an unencrypted text-layer PDF.')); };
     worker.postMessage({ bytes, id: crypto.randomUUID(), filename: file.name }, [bytes]);
   });

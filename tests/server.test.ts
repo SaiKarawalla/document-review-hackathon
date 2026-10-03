@@ -1,0 +1,27 @@
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import { createApp } from '../server/app';
+import { ModelGateway } from '../server/gateway';
+import { contextSchema, minimize, ruleSummary, type ReducedContext } from '../src/shared/request';
+import { compareDocuments } from '../src/shared/documents';
+import { pair } from './helpers';
+import type { AddressInfo } from 'node:net';
+describe('HTTP request boundary',()=>{
+  let ctx:ReducedContext;let address:string;
+  const log=vi.spyOn(console,'log');
+  const transport=vi.fn<typeof fetch>(async(url)=>String(url).endsWith('/api/tags')?Response.json({models:[{name:'qwen2.5:1.5b'}]}):Response.json({done:true,response:JSON.stringify(ruleSummary(ctx))}));
+  const server=createApp(new ModelGateway(undefined,transport));
+  const headers={'Host':'127.0.0.1:8787','Origin':'http://127.0.0.1:5173','Content-Type':'application/json','X-Document-Review':'1'};
+  beforeAll(async()=>{const docs=await pair('malicious-text');ctx=minimize(compareDocuments(docs),docs);await new Promise<void>(resolve=>server.listen(0,'127.0.0.1',resolve));address=`http://127.0.0.1:${(server.address() as AddressInfo).port}`;});
+  afterAll(async()=>{await new Promise<void>((resolve,reject)=>server.close(e=>e?reject(e):resolve()));log.mockRestore();});
+  it('preview does not call provider',async()=>{const calls=transport.mock.calls.length;const response=await fetch(address+'/api/preview',{method:'POST',headers,body:JSON.stringify(ctx)});expect(response.status).toBe(200);expect((await response.json()).destination).toContain('127.0.0.1:11434');expect(transport.mock.calls.length).toBe(calls);});
+  it('browser-origin and custom header required',async()=>{const{Origin,...noOrigin}=headers;const a=await fetch(address+'/api/preview',{method:'POST',headers:noOrigin,body:JSON.stringify(ctx)});expect(a.status).toBe(403);const{'X-Document-Review':_x,...noHeader}=headers;const b=await fetch(address+'/api/preview',{method:'POST',headers:noHeader,body:JSON.stringify(ctx)});expect(b.status).toBe(403);});
+  it('rejects untrusted Origin',async()=>{const r=await fetch(address+'/api/preview',{method:'POST',headers:{...headers,Origin:'https://evil.invalid'},body:JSON.stringify(ctx)});expect(r.status).toBe(403);expect(r.headers.has('Access-Control-Allow-Origin')).toBe(false);});
+  it('rejects untrusted Host',async()=>{const r=await fetch(address+'/api/health',{headers:{Host:'evil.invalid'}});expect(r.status).toBe(403);});
+  it('CORS permits only expected origin and headers',async()=>{const r=await fetch(address+'/api/preview',{method:'OPTIONS',headers:{Host:headers.Host,Origin:headers.Origin}});expect(r.status).toBe(204);expect(r.headers.get('Access-Control-Allow-Origin')).toBe(headers.Origin);expect(r.headers.get('Access-Control-Allow-Headers')).toContain('X-Document-Review');});
+  it('oversize browser request rejected',async()=>{const r=await fetch(address+'/api/preview',{method:'POST',headers,body:'x'.repeat(32769)});expect(r.status).toBe(413);});
+  it('PDF/raw request rejected by schema',async()=>{const r=await fetch(address+'/api/preview',{method:'POST',headers,body:JSON.stringify({raw:'Avery Example',pdf:'bytes'})});expect(r.status).toBe(400);expect(await r.text()).not.toContain('Avery');});
+  it('bad content type rejected',async()=>{const r=await fetch(address+'/api/preview',{method:'POST',headers:{...headers,'Content-Type':'text/plain'},body:'x'});expect(r.status).toBe(415);});
+  it('bad JSON rejected',async()=>{const r=await fetch(address+'/api/preview',{method:'POST',headers,body:'{'});expect(r.status).toBe(400);});
+  it('unknown URL cannot become arbitrary provider',async()=>{const calls=transport.mock.calls.length;const r=await fetch(address+'/api/https://exfiltration.invalid',{method:'POST',headers,body:JSON.stringify(ctx)});expect(r.status).toBe(404);expect(transport.mock.calls.length).toBe(calls);});
+  it('accepted minimized request produces receipt and has no document-content logs',async()=>{const p=await(await fetch(address+'/api/preview',{method:'POST',headers,body:JSON.stringify(ctx)})).json();const r=await fetch(address+'/api/send',{method:'POST',headers,body:JSON.stringify({id:p.id,hash:p.hash})});expect(r.status).toBe(200);expect((await r.json()).requestHash).toBe(p.hash);expect(transport.mock.calls.every(([url])=>String(url).startsWith('http://127.0.0.1:11434/'))).toBe(true);expect(log).not.toHaveBeenCalled();expect(()=>contextSchema.parse(ctx)).not.toThrow();});
+});

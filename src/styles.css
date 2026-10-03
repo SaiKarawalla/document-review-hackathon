@@ -11,3 +11,12 @@ footer{margin:46px 0 0;border-top:1px solid #e0e6d8;padding:19px 0 25px;font-siz
 @media(max-width:1000px){main{padding:0 28px}.header{padding:0 28px}.hero{gap:30px}.hero-note{max-width:300px;padding:16px}.setup-content{gap:18px}.review-grid{gap:20px}.boundary{padding:17px}.boundary-columns{gap:9px}.local-pill{display:none}}
 @media(max-width:760px){.header{height:66px;padding:0 20px}.brand{font-size:15px}.brand-divider,.workspace-label{display:none}.header-actions{gap:10px}main{padding:0 20px}.hero{padding:33px 0 30px;display:block}.hero h1{font-size:38px}.hero-note{display:none}.setup{padding:18px}.section-heading h2{font-size:14px}.setup>.section-heading>.muted{display:none}.setup-content{grid-template-columns:1fr;gap:17px}.document-grid,.review-grid{grid-template-columns:1fr;gap:15px}.review-grid{margin-top:29px;gap:30px}.doc-top{padding:17px}.doc-meta{margin:0 17px}.fields{padding:3px 17px}.other-fields{margin:0 17px 13px}.doc-footer{padding:10px 17px}.empty-document{min-height:90px;padding:15px 17px 20px}.dialog-content{grid-template-columns:1fr;padding:18px}.dialog-heading{padding:17px}.dialog-heading h2{font-size:16px}.source-notes h3{margin-top:16px}footer{display:block;font-size:9px}footer>span:last-child{display:block;margin-top:8px}.boundary-columns{gap:15px}.edit-panel{padding:15px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* Secondary text remains readable on the pale local-workspace surfaces. */
+.workspace-label,.local-pill,.reset,.eyebrow,.hero>div>p,.hero-note p,.hero-note span,.muted,.demo-loader label,.demo-loader>p,.drop-zone span,.drop-zone p,.notice,.doc-role,.doc-meta>span,.field-row label,.other-fields summary,.doc-footer,.empty-document,.empty-document p,.section-description,.finding>p,.consistent-group>summary,.workflow-note,.boundary-label,.boundary-columns p,.model-status,.model-status .text-button,.boundary-footnote,.request-meta span,.request-meta code,.hash,.preview-note,.approval,.summary-result>p,.summary-finding p,.summary-meta,.summary-result details,footer,.source-notes>p,.pdf-page p{color:#5d6c56}
+.badge.consistent,.summary-finding span{color:#4c6742}
+.badge.conflicting,.badge.absent,.count-label,.tiny-warning,.model-help{color:#845025}
+.badge.needs_review,.badge.not_comparable{color:#726132}
+.boundary-label.withheld,.boundary-columns>div:last-child p{color:#706a50}
+.step,.empty-state,.empty-state p,.local-tag{color:#5b7150}
+.evidence-links .text-button{color:#536e45}
+.request-preview pre{color:#4a603e}
