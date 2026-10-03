@@ -22,7 +22,30 @@ Versions below come from installed package metadata and the committed lockfile o
 
 Installed LICENSE/NOTICE files also cover bundled third-party material (for example PDF.js CMaps/ICC and Vite/Vitest bundles). The table lists direct dependencies only; transitive packages and integrity hashes are recorded in package-lock.json. No CDN/runtime remote fonts are used. The removed pdf-lib is not an installed application dependency.
 
-## Runtime and model
+## Native mobile and companion additions
+
+Installed metadata checked on the same Mac. Mobile has its own committed lockfile; root PDF.js/Zod shared modules are reused. All mobile packages below have MIT metadata except TypeScript (Apache-2.0).
+
+| Package | Installed |
+| --- | --- |
+| expo | 57.0.26 |
+| expo-camera / expo-constants / expo-crypto | 57.0.6 / 57.0.20 / 57.0.3 |
+| expo-document-picker / expo-file-system | 57.0.3 / 57.0.7 |
+| expo-linking / expo-router / expo-status-bar | 57.0.11 / 57.0.24 / 57.0.1 |
+| react / react-dom | 19.2.3 / 19.2.3 |
+| react-native | 0.86.3 |
+| react-native-reanimated / react-native-worklets | 4.5.1 / 0.10.1 |
+| react-native-safe-area-context / react-native-screens | 5.7.0 / 4.26.2 |
+| react-native-web / react-native-webview | 0.21.3 / 13.16.1 |
+| zod | 4.6.5 |
+| @types/react / eslint-config-expo / typescript | 19.2.18 / 57.0.2 / 6.0.3 |
+| Root additions: esbuild / qrcode / @types/qrcode | 0.28.2 / 1.5.4 / 1.5.6 — MIT |
+
+Matching [Expo SDK 57 documentation](https://docs.expo.dev/versions/v57.0.0/) and installed bundled-module version map were checked before implementation. Native module APIs: [Crypto](https://docs.expo.dev/versions/v57.0.0/sdk/crypto/), [DocumentPicker](https://docs.expo.dev/versions/v57.0.0/sdk/document-picker/), [FileSystem](https://docs.expo.dev/versions/v57.0.0/sdk/filesystem/), [WebView](https://docs.expo.dev/versions/v57.0.0/sdk/webview/). React/React Native metadata links identify [React](https://github.com/facebook/react), [React Native](https://github.com/facebook/react-native), [WebView](https://github.com/react-native-webview/react-native-webview). Companion/build tools: [esbuild](https://github.com/evanw/esbuild), [node-qrcode](https://github.com/soldair/node-qrcode).
+
+`npx expo install --check` passes with SDK-compatible versions. Initial peer mismatch was resolved using the installed Expo version map (React DOM 19.2.3, reanimated 4.5.1, worklets 0.10.1), without force-installing incompatible peers. **Mobile `npm audit` reports 29 advisories (19 high, 10 moderate), including transitive Expo/Metro/config tooling and router dependencies. These remain unresolved; this is not a clean mobile audit.** npm's suggested fixes include incompatible Expo 44/React Native downgrades or SDK 58 router changes; no force downgrade was applied during this Expo Go checkpoint. Root runtime audit results in older records apply only to that dependency tree. Reassess before distributing or accepting real sensitive documents.
+
+## Runtime and model inventory
 
 | Component | Verified version / identity | License / source |
 | --- | --- | --- |

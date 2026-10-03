@@ -1,0 +1,14 @@
+import { networkInterfaces } from 'node:os';
+import { randomBytes } from 'node:crypto';
+import { mkdir, writeFile } from 'node:fs/promises';
+import QRCode from 'qrcode';
+import { createMobileBridge } from '../server/mobile-bridge';
+const address=Object.values(networkInterfaces()).flat().find(i=>i?.family==='IPv4' && !i.internal && /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(i.address))?.address;
+if(!address) throw new Error('Connect this Mac and the iPhone to the same private Wi-Fi/hotspot.');
+const key=randomBytes(32), expiresAt=Date.now()+60*60_000;
+const pairing={version:1,url:`http://${address}:8790/paired`,key:key.toString('hex'),expiresAt};
+await mkdir('artifacts',{recursive:true});
+const data=JSON.stringify(pairing), qr=await QRCode.toDataURL(data,{width:400,margin:2});
+await writeFile('artifacts/mobile-pairing.json',data,{mode:0o600});
+await writeFile('artifacts/mobile-pairing.html',`<!doctype html><meta name="viewport" content="width=device-width"><title>Pair iPhone to this Mac</title><style>body{font:18px system-ui;max-width:600px;margin:40px auto;padding:20px}img{max-width:100%}textarea{width:100%;height:100px}</style><h1>Pair your iPhone</h1><p>In Document Review, tap Pair Mac and scan this private QR. Expires in one hour. Keep this screen private.</p><img src="${qr}" alt="Private pairing QR"><p>Same Wi-Fi or hotspot. Ollama remains on the Mac. Only encrypted minimized facts cross this connection.</p><details><summary>Manual pairing / simulator</summary><textarea readonly>${data}</textarea></details>`,{mode:0o600});
+createMobileBridge(key,`${address}:8790`,fetch,expiresAt).listen(8790,address,()=>console.log(`Paired companion ready on ${address}:8790. Open artifacts/mobile-pairing.html locally. No key is logged. Stop/restart to revoke pairing.`));

@@ -2,7 +2,9 @@
 
 A local hackathon prototype for finding missing or conflicting information across supported PDFs and showing exactly what minimized information the AI receives. Intended audience: teams handling visa/immigration paperwork.
 
-**Working baseline:** fictional client intake + bank statement, real browser-local PDF parsing, source evidence, editable fields, deterministic comparison and real local Ollama explanations. **Visa-form support and purpose-driven Proof Mode are planned for Phase 6 and are not implemented yet.** This is consistency review, not document authentication or an eligibility decision.
+**Target: iPhone app in Expo Go.** Native UI and a phone-local PDF engine are in `mobile/`, sharing the existing comparison and minimization rules. Ollama stays on the paired Mac; the phone sends only approved, encrypted minimized facts. Follow the [iPhone setup and demo guide](docs/MOBILE.md). Native rehearsal status is recorded in [PROGRESS](docs/PROGRESS.md).
+
+**Preserved baseline:** fictional client intake + bank statement, real browser-local PDF parsing, source evidence, editable fields, deterministic comparison and real local Ollama explanations. **Visa-form support and purpose-driven Proof Mode are planned for Phase 6 and are not implemented yet.** This is consistency review, not document authentication or an eligibility decision.
 
 Private repository: [SaiKarawalla/document-review-hackathon](https://github.com/SaiKarawalla/document-review-hackathon). No public deployment or paid service is required.
 
@@ -81,7 +83,7 @@ For development, stop the production app process, then:
 npm run dev
 ```
 
-Open <http://127.0.0.1:5173>; this command starts Vite and the local backend on port 8787. Ollama remains a separate prerequisite for AI. The hosted frontend/phone cannot automatically reach this loopback backend; phone-sized layout is tested, phone inference/network access is not implemented.
+Open <http://127.0.0.1:5173>; this command starts the preserved Vite interface and local backend on port 8787. The native phone app uses its separate paired companion on private-LAN port 8790; do not expose the loopback API or Ollama. Phone-local inference is not implemented.
 
 ## Demo and supported inputs
 
@@ -101,7 +103,7 @@ Select **Address conflict**, click **Load demo pair**, inspect the source, then 
 npm run check
 ```
 
-Runs typechecking, 82 automated tests in five files and the production build. Tests use committed fictional PDFs and explicit provider test doubles; they do not download a model or call a paid API. The actual local model was separately verified on the demo laptop.
+Runs typechecking, 93 automated tests in six files and the production web build. Tests use committed fictional PDFs and explicit provider test doubles; they do not download a model or call a paid API. Mobile typecheck/lint and simulator rehearsal are separate checks in MOBILE/PROGRESS. The actual local model was separately verified on the demo laptop.
 
 Optional real integration, with local Ollama running:
 
@@ -129,6 +131,7 @@ CI is prepared in `.github/workflows/checks.yml` but **not enabled or tested on 
 | Downloaded local Ollama explanation | Implemented; actual model and production browser response validated |
 | Rule-based backup | Implemented; controlled unavailable-health browser rehearsal passed, no model generation |
 | macOS setup/demo/license handoff | Written; lockfile reinstall, build/checks and local production launch verified on this Mac |
+| Native iPhone interface, local PDF engine, paired Mac AI | Implemented; two native simulator test cases verified across rehearsals, final real response 5.3 s; physical iPhone still unverified |
 | Hosted CI | Prepared, gated off; billing allowance inaccessible and Linux run unverified |
 | Schengen application adapter, single-visa checks, purpose-driven Proof Mode | Planned Phase 6; not implemented |
 | OCR, arbitrary PDFs, phone inference, cloud hosting, accounts/storage/integrations | Not implemented |

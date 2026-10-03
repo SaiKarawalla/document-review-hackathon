@@ -58,3 +58,6 @@ If an active model request stalls, use **Cancel**. Keep the deterministic findin
 ## Rehearsal record
 
 Phase 5 automated rehearsal reran the full production browser flow with actual local inference: all 25 checks passed. This validates the click sequence, not that a person has performed a timed 90-second delivery. Phase 5 also rechecked real model transport, hash and literal exclusions at 5376 ms. `node scripts/offline-smoke.mjs` separately injects an explicitly labeled unavailable-health response in the test browser only: real parsed PDFs still produce the address conflict, the real rule summary is labeled as no model response, zero generation attempts occur, and reset clears it. This is a controlled UI rehearsal, not a real Ollama-daemon outage. It restores native fetch and live health afterward. No simulated output is labeled real AI.
+# Native iPhone transition
+
+Use [MOBILE.md](MOBILE.md) for Expo Go and private Mac pairing. The two core demonstrations remain supported-document comparison and the exact minimized AI request. Real PDFs parse on the phone; inference runs on the paired Mac. Explain that boundary explicitly to judges. The script below originally rehearsed the preserved desktop baseline; native verification is separately recorded in PROGRESS. Visa/Proof Mode is still Phase 6. No paid service is enabled.
