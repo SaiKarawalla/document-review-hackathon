@@ -2,6 +2,8 @@ Phase 7 COMPLETE — 2026-10-03: Expo Go covered-photo review implemented and ve
 
 ## Phase 7 final evidence and limitations
 
+Source checkpoint **8b3a803**, `Complete Phase 7 private photo review and real Qwen verification`, pushed successfully to public origin/main. Staged 33 intended files; no forbidden artifacts/credential-pattern matches; final screenshot review passed. Metro8082, private companion8790, loopback API8787 and Ollama11434 remain listening. This following documentation-only checkpoint records the verified push; use git log -1 for the latest record commit.
+
 User explicitly authorized the Lens-style extension and then said continue after a short pause. This supersedes the old photo-OCR deferral and Phase6 stop; no new repository/paid/cloud/billing/CI activation.
 
 Implemented: shared photo limits/geometry/multi-anchor recognition/field validation/strict enum context; two photo finding IDs and validated photo-specific sentences through the single gateway. Expo ImagePicker57.0.20; local opaque brushes/undo/lock/flatten; bundled Tesseract6.0.1/core6.1.2/English data; full-line cover-intersection exclusion; real word boxes/glossary taps; visible text correction/confirmation; real worker progress; expiry/hash approval/receipt/cancel/reset/background clearing. Heavy OCR asset imported on entry. No runtime HTTP/CDN/language cache. New photo screen English, baseline five display languages unchanged.
