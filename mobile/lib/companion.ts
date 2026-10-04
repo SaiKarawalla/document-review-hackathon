@@ -1,16 +1,16 @@
 import { AESEncryptionKey, AESSealedData, aesEncryptAsync, aesDecryptAsync, randomUUID, digestStringAsync, CryptoDigestAlgorithm } from 'expo-crypto';
 import { z } from 'zod';
-import { mobileCommand, pairingSchema, type Pairing, type MobileCommand } from '../../src/shared/mobile-protocol';
+import { mobileCommand, pairingSchema, pairingExpired, type Pairing, type MobileCommand } from '../../src/shared/mobile-protocol';
 import type { RequestPreview } from '../../src/shared/request';
 const AAD=new TextEncoder().encode('document-review-mobile-v1');
 export function readPairing(value:string):Pairing {
   const pairing=pairingSchema.parse(JSON.parse(value));
-  if(pairing.expiresAt<=Date.now())throw new Error('Pairing expired. Restart the Mac companion and scan its new QR.');
+  if(pairingExpired(pairing))throw new Error('Old pairing expired. Scan the current Mac QR for pairing without a time limit.');
   return pairing;
 }
 export async function companion<T>(pairing:Pairing,command:MobileCommand,signal?:AbortSignal):Promise<T> {
   const bounded=mobileCommand.parse(command);
-  if(pairing.expiresAt<=Date.now())throw new Error('Pairing expired. Pair again.');
+  if(pairingExpired(pairing))throw new Error('Old pairing expired. Scan the current Mac QR for pairing without a time limit.');
   const key=await AESEncryptionKey.import(pairing.key,'hex');
   const requestId=randomUUID();
   const encrypted=await aesEncryptAsync(new TextEncoder().encode(JSON.stringify({version:1,requestId,createdAt:Date.now(),command:bounded})),key,{additionalData:AAD});

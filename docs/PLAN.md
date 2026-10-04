@@ -44,3 +44,6 @@ No extra locales beyond the five baseline display languages are promised. Author
 Read AGENTS, PROJECT-CONTEXT, DECISIONS, PROGRESS and this plan. Inspect git/live services. Inspect the completed Phase 6 checkpoint; do not restart completed phases/repositories. Read MOBILE, VISA-WORKFLOW and LANGUAGES-AND-SPONSOR-PLAN for current constraints. Older progress entries are historical; this plan/latest steering governs.
 
 Post-checkpoint repairs explicitly authorized: Expo launch/pairing QR confusion and globe clipping/drag. Completed; no next phase started. Simulator native drag check passed; physical rehearsal remains.
+## Latest completed reliability repair
+
+Removed the timed private pairing expiry at user request. Pairing now lasts until companion stop/restart; no additional feature phase. Root153tests/build, mobile checks and encrypted real-service health passed. Fresh private QR opened locally; user scans once inside app Settings. No paid usage. Historical one-hour pairing descriptions are superseded.

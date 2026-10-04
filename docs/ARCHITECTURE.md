@@ -48,3 +48,6 @@ ExpoGo iPhone → phone-local PDF.js in disposable network-disabled WebView → 
 `locales.ts` provides EN/ES/HI/zh-Hans/FR display dictionaries. Only UI and canonical validated model sentences use display translation; values, filenames, excerpts, raw PDF canvases and exact body/hash/receipt use raw rendering. Language switching is display-only and creates no request; correction/purpose changes invalidate/cancel. Canonical model output is real English constrained Qwen output, with translated-display disclosure. Native standalone source retained separately, not imported by ExpoGo’s entry screen.
 
 Proof counters measure supported field records including absent slots, local selection/exclusion, derived finding count in actual context. They are not raw-form field counts, a privacy percentage, or a claim that prepared data has already been sent. Fixed sample policy/confirmation/statuses do not establish legal eligibility, authenticity or account ownership.
+## Current pairing lifetime
+
+Pairing expiresAt:null means no elapsed-time expiry for the running companion. Stop/restart rotates its key. Legacy numeric expiry remains supported; request freshness/replay checks and five-minute one-use AI approval expiry remain enforced. Background/reset can clear phone-held pairing, requiring the same current QR again. Historical one-hour references below are superseded.

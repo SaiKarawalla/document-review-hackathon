@@ -16,7 +16,7 @@ Public repository: [SaiKarawalla/document-review-hackathon](https://github.com/S
 
 **Phase 7 redesign:** Home/Review/Settings, guided document and photo steps, Light/Dark/System appearance, and an offline globe with ten country preferences sharing five display languages. Country selection does not add visa rules or document formats. [Design and scope](docs/REDESIGN.md) · [No-printer demo](docs/DEMO.md) · [Synthetic screenshot PDF](output/pdf/synthetic-bank-statement-photo-demo.pdf).
 
-**Latest verified checkpoint:** 151 automated tests in ten files, root TypeScript/production build, and mobile TypeScript/lint pass. Simulator checks verified the redesigned document workflow, a real local Qwen photo response, and globe diagonal/reverse dragging without parent scrolling or accidental selection. Source and demo fixtures are committed; generated phone engines, temporary pairing secrets, downloaded models and screenshots are intentionally ignored. Follow [phone setup](docs/MOBILE.md) to generate the local assets.
+**Latest verified checkpoint:** 153 automated tests in ten files, root TypeScript/production build, and mobile TypeScript/lint pass. Simulator checks verified the redesigned document workflow, a real local Qwen photo response, and globe diagonal/reverse dragging without parent scrolling or accidental selection. Source and demo fixtures are committed; generated phone engines, temporary pairing secrets, downloaded models and screenshots are intentionally ignored. Follow [phone setup](docs/MOBILE.md) to generate the local assets.
 
 ## Open the existing demo on this Mac
 
@@ -113,7 +113,7 @@ Select **Address conflict**, click **Load demo pair**, inspect the source, then 
 npm run check
 ```
 
-Runs typechecking, 151 automated tests in ten files and the production web build. Tests use committed fictional PDFs and explicit provider test doubles; they do not download a model or call a paid API. Mobile typecheck/lint and simulator rehearsal are separate checks in MOBILE/PROGRESS. The actual local model was separately verified on the demo laptop.
+Runs typechecking, 153 automated tests in ten files and the production web build. Tests use committed fictional PDFs and explicit provider test doubles; they do not download a model or call a paid API. Mobile typecheck/lint and simulator rehearsal are separate checks in MOBILE/PROGRESS. The actual local model was separately verified on the demo laptop.
 
 Optional real integration, with local Ollama running:
 

@@ -1,3 +1,7 @@
+## Pairing reliability repair — 2026-10-03
+
+Latest user requires no timed QR expiration. Current private QR uses expiresAt:null and stays valid for the running Mac companion; stopping/restarting rotates its key. Older numeric QR codes retain expiry checks. Phone background/reset can clear its in-memory pairing; scan the same current QR again. Request freshness, replay rejection and five-minute single-use AI approvals remain unchanged. Root153tests/typecheck/build, mobile typecheck/lint and actual encrypted companion health passed; Qwen ready. No paid services. Previous one-hour references are historical.
+
 ## Submission repository audit — 2026-10-03
 
 User requested final repository recheck. GitHub API verified PUBLIC and main; remote commit7c35458 matched the clean local branch before this documentation correction. Root npm run check passed151tests/10files, TypeScript and production build; mobile typecheck/lint passed again. Found historical README claims (companion not current, no photo OCR, old test count and unstarted redesign); corrected to current Expo Go/paired-Mac/photo/globe scope and FormBridge submission name, while preserving original records as historical. Updated MOBILE Safari/Settings pairing instructions. Generated assets/models/QR secrets remain intentionally excluded with reproducible build scripts. No new feature phase or paid service.

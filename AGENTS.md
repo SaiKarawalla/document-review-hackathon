@@ -1,3 +1,7 @@
+## Pairing reliability repair — 2026-10-03
+
+User explicitly requested no QR expiration after the pitch was nearly interrupted. Pairing now has no elapsed-time limit (expiresAt:null); it lasts until the Mac companion stops/restarts and rotates its key. Numeric legacy expiries still validate. App background/reset may still clear in-memory pairing and require rescanning the same current QR. Request freshness/replay checks and single-use AI preview expiry remain enforced. Root153tests/typecheck/build and mobile typecheck/lint passed. Actual restarted companion encrypted health returned200, correlated, Qwen available, noTimer:true; new private QR opened locally. No cloud or paid usage. Older one-hour instructions below are historical.
+
 ## Submission audit checkpoint
 
 Latest user requested repo recheck. README now names FormBridge (current app display name Document Review) and reflects Expo Go/paired-Mac, photo OCR, completed redesign and151tests. MOBILE pairing instructions corrected. All source checks passed again; no new feature phase. Historical records below remain preserved.

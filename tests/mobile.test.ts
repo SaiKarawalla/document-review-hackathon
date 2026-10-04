@@ -3,13 +3,13 @@ import { randomBytes, randomUUID } from 'node:crypto';
 import { request } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { createMobileBridge, openMobile, sealMobile } from '../server/mobile-bridge';
-import { pairingSchema } from '../src/shared/mobile-protocol';
+import { pairingSchema, pairingExpired } from '../src/shared/mobile-protocol';
 import { minimize } from '../src/shared/request';
 import { compareDocuments } from '../src/shared/documents';
 import { pair } from './helpers';
 const servers:ReturnType<typeof createMobileBridge>[]=[];
 afterEach(async()=>{await Promise.all(servers.splice(0).map(s=>new Promise<void>(r=>s.close(()=>r()))));});
-async function setup(expiresAt=Date.now()+60_000){
+async function setup(expiresAt: number | null = null){
   const key=randomBytes(32),transport=vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({available:true}),{status:200}));
   const server=createMobileBridge(key,'127.0.0.1:test',transport,expiresAt);servers.push(server);
   await new Promise<void>(r=>server.listen(0,'127.0.0.1',r));const port=(server.address() as AddressInfo).port;
@@ -66,6 +66,20 @@ describe('paired mobile boundary',()=>{
     expect((await s.post(s.envelope(s.message({action:'health'},{createdAt:Date.now()-31_000})))).status).toBe(409);expect(s.transport).toHaveBeenCalledTimes(1);
   });
   it('rejects an expired pairing',async()=>{const s=await setup(Date.now()-1);expect((await s.post(s.envelope(s.message({action:'health'})))).status).toBe(403);expect(s.transport).not.toHaveBeenCalled();});
+  it('keeps service-lifetime pairing valid beyond the previous hour limit',async()=>{
+    const s=await setup(),now=Date.now();
+    const clock=vi.spyOn(Date,'now').mockReturnValue(now+2*60*60_000);
+    try {
+      const result=await s.post(s.envelope(s.message({action:'health'})));
+      expect(result.status).toBe(200);expect(s.transport).toHaveBeenCalledTimes(1);
+    } finally {clock.mockRestore();}
+  });
+  it('accepts no-timer QR codes and preserves legacy expiry checks on the client',()=>{
+    const p=pairingSchema.parse({version:1,key:'a'.repeat(64),expiresAt:null,url:'http://192.168.1.2:8790/paired'});
+    expect(pairingExpired(p,Number.MAX_SAFE_INTEGER)).toBe(false);
+    expect(pairingExpired({expiresAt:100},100)).toBe(true);
+    expect(pairingExpired({expiresAt:100},99)).toBe(false);
+  });
   it('rejects wrong keys and unknown commands/provider URLs',async()=>{
     const s=await setup();expect((await s.post(s.envelope(s.message({action:'health'}),randomBytes(32)))).status).toBe(400);
     expect((await s.post(s.envelope(s.message({action:'upload',url:'https://example.com'})))).status).toBe(400);expect(s.transport).not.toHaveBeenCalled();

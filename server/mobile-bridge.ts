@@ -17,7 +17,7 @@ export function openMobile(data: string, key: Buffer): unknown {
 }
 // Separate paired, encrypted adapter; existing API and Ollama stay loopback-only.
 // No file upload route and no provider destination setting.
-export function createMobileBridge(key: Buffer, host: string, transport: typeof fetch = fetch, expiresAt = Date.now()+60*60_000) {
+export function createMobileBridge(key: Buffer, host: string, transport: typeof fetch = fetch, expiresAt: number | null = null) {
   const used = new Set<string>(); let count=0, windowStart=Date.now(); let active=0;
   const ownedPreviews = new Set<string>();
   return createServer(async (req, res) => {
@@ -34,7 +34,7 @@ export function createMobileBridge(key: Buffer, host: string, transport: typeof 
         return;
       }
       if (req.method !== 'POST' || req.url !== '/paired' || req.headers.host !== host || req.headers.origin
-        || req.headers['content-type'] !== 'application/json' || Date.now() >= expiresAt) {plain(403);return;}
+        || req.headers['content-type'] !== 'application/json' || (expiresAt !== null && Date.now() >= expiresAt)) {plain(403);return;}
       if (Date.now()-windowStart > 60_000) {count=0;windowStart=Date.now();}
       if (++count > 90 || active >= 4 || used.size >= 4096) {plain(429);return;}
       let bytes=0, body='';
