@@ -1,3 +1,7 @@
+## Submission repository audit — 2026-10-03
+
+User requested final repository recheck. GitHub API verified PUBLIC and main; remote commit7c35458 matched the clean local branch before this documentation correction. Root npm run check passed151tests/10files, TypeScript and production build; mobile typecheck/lint passed again. Found historical README claims (companion not current, no photo OCR, old test count and unstarted redesign); corrected to current Expo Go/paired-Mac/photo/globe scope and FormBridge submission name, while preserving original records as historical. Updated MOBILE Safari/Settings pairing instructions. Generated assets/models/QR secrets remain intentionally excluded with reproducible build scripts. No new feature phase or paid service.
+
 ## Latest repair checkpoint — Expo opening and globe, 2026-10-03
 
 User reported Safari pairing rejection and rough/distorted globe. Fixed the companion GET /paired and / to show a public Expo Go launcher and clear Step 1 / Step 2 instructions; no keys or API data are served. Encrypted POST protections remain unchanged. Companion restarted around19:27 with refreshed private QR; actual encrypted health request returned200, correlation valid, qwen2.5:1.5b available. Step 1 app QR opened on Mac.
@@ -180,3 +184,5 @@ Phase6 source checkpoint **a233358**, `Complete Phase 6 Expo Go visa proof and f
 Post-checkpoint language wording check: corrected Spanish address-conflict label from a French-like word to “Dirección distinta”. Prior checks verified dictionary completeness/canonical model sentence coverage and five native layouts, not native-speaker linguistic certification. No new phase started, source values/model request unchanged.
 
 Repair follow-up verification: root npm run check completed151tests/10files plus TypeScript/production build; mobile typecheck/lint passed. First root check flagged the test import from mobile/node_modules as untyped; added explicit root dev-only d3-geo/types and changed to the normal module import, then final check passed. Full ISC notices retained in mobile/assets/globe-NOTICE.txt. No change to document/AI privacy rules.
+
+Submission audit evidence:155tracked files checked,0forbidden generated/secret/model paths,0credential-pattern/current-pairing-key matches; reachable Git object paths contain0historical artifacts/screenshots/model/.env paths. README/MOBILE/DEMO/REDESIGN relative links all resolve. Synthetic screenshot PDF verified valid1page/60827bytes/not encrypted/noJavaScript. Checks are scoped scans, not a production-security certification. Documentation corrections committed/pushed; no source changes after the successful checks.

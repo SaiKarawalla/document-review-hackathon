@@ -1,3 +1,7 @@
+## Submission audit checkpoint
+
+Latest user requested repo recheck. README now names FormBridge (current app display name Document Review) and reflects Expo Go/paired-Mac, photo OCR, completed redesign and151tests. MOBILE pairing instructions corrected. All source checks passed again; no new feature phase. Historical records below remain preserved.
+
 ## Latest repair checkpoint — Expo opening and globe, 2026-10-03
 
 User reported Safari pairing rejection and rough/distorted globe. Fixed the companion GET /paired and / to show a public Expo Go launcher and clear Step 1 / Step 2 instructions; no keys or API data are served. Encrypted POST protections remain unchanged. Companion restarted around19:27 with refreshed private QR; actual encrypted health request returned200, correlation valid, qwen2.5:1.5b available. Step 1 app QR opened on Mac.

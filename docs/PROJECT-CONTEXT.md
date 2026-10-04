@@ -1,3 +1,7 @@
+## Submission repository audit — 2026-10-03
+
+User requested final repository recheck. GitHub API verified PUBLIC and main; remote commit7c35458 matched the clean local branch before this documentation correction. Root npm run check passed151tests/10files, TypeScript and production build; mobile typecheck/lint passed again. Found historical README claims (companion not current, no photo OCR, old test count and unstarted redesign); corrected to current Expo Go/paired-Mac/photo/globe scope and FormBridge submission name, while preserving original records as historical. Updated MOBILE Safari/Settings pairing instructions. Generated assets/models/QR secrets remain intentionally excluded with reproducible build scripts. No new feature phase or paid service.
+
 ## Latest repair checkpoint — Expo opening and globe, 2026-10-03
 
 User reported Safari pairing rejection and rough/distorted globe. Fixed the companion GET /paired and / to show a public Expo Go launcher and clear Step 1 / Step 2 instructions; no keys or API data are served. Encrypted POST protections remain unchanged. Companion restarted around19:27 with refreshed private QR; actual encrypted health request returned200, correlation valid, qwen2.5:1.5b available. Step 1 app QR opened on Mac.
