@@ -1,8 +1,8 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { contextSchema, validateSummary, EXPLANATIONS, FOLLOW_UPS, OVERVIEWS, type ReducedContext, type RequestPreview } from '../src/shared/request';
+import { contextSchema, validateSummary, allowedSentences, OVERVIEWS, type ReducedContext, type RequestPreview } from '../src/shared/request';
 export const OLLAMA = 'http://127.0.0.1:11434';
 export const DESTINATION = OLLAMA + '/api/generate';
-const SYSTEM = 'You assist a human document reviewer. You receive only reduced consistency facts for a synthetic case. Deterministic statuses are authoritative. Return JSON only. Choose exact sentences from the allowed vocabulary appropriate to each status. Include every existing finding ID exactly once. Do not claim document authenticity, fraud, legal validity or eligibility. Do not invent values, tools, actions or findings.';
+const SYSTEM = 'You assist a human document reviewer. You receive only reduced review facts. Deterministic statuses are authoritative. Return JSON only. Choose exact sentences from the allowed vocabulary appropriate to each finding. Include every existing finding ID exactly once. Do not claim document authenticity, fraud, legal validity or eligibility. Do not invent values, tools, actions or findings.';
 export class GatewayError extends Error { constructor(public status: number, message: string) { super(message); } }
 interface Pending { preview: RequestPreview; context: ReducedContext }
 export class ModelGateway {
@@ -20,7 +20,7 @@ export class ModelGateway {
     const body = {
       model: this.model, system: SYSTEM,
       prompt: JSON.stringify({ instruction: `Explain each finding in context order. Include all ${context.findings.length} unique IDs exactly once. Choose only sentences allowed for that ID. The response schema enforces authoritative statuses.`,
-        context, choices: context.findings.map(f => ({ id: f.id, explanation: EXPLANATIONS[f.status], follow_up: FOLLOW_UPS[f.status] })) }),
+        context, choices: context.findings.map(f => ({ id: f.id, ...allowedSentences(context,f) })) }),
       format: {
         type: 'object', additionalProperties: false, required: ['overview', 'findings'],
         properties: {
@@ -28,7 +28,7 @@ export class ModelGateway {
           findings: { type: 'array', minItems: context.findings.length, maxItems: context.findings.length, items: { anyOf: context.findings.map(f => ({
             type: 'object', additionalProperties: false, required: ['id','explanation','follow_up'],
             properties: { id: { type: 'string', enum: [f.id] },
-              explanation: { type: 'string', enum: EXPLANATIONS[f.status] }, follow_up: { type: 'string', enum: FOLLOW_UPS[f.status] } },
+              explanation: { type: 'string', enum: allowedSentences(context,f).explanation }, follow_up: { type: 'string', enum: allowedSentences(context,f).follow_up } },
           })) } },
         },
       }, stream: false,

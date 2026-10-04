@@ -1,0 +1,14 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {photoLineSchema,photoContext,detectPhoto} from '../src/shared/photo';
+import {z} from 'zod';
+import {ModelGateway,DESTINATION} from '../server/gateway';
+const source=JSON.parse(await readFile('artifacts/photo-ocr-covered.json','utf8'));
+const lines=z.array(photoLineSchema).parse(source.lines),kind=detectPhoto(lines);
+if(!kind)throw new Error('Actual OCR did not recognize the selected bank layout.');
+const context=photoContext(kind,lines,source.masks.length,true),calls:{url:string;body?:string}[]=[];
+const transport:typeof fetch=async(input,init)=>{calls.push({url:String(input),body:typeof init?.body==='string'?init.body:undefined});return fetch(input,init);};
+const gateway=new ModelGateway('qwen2.5:1.5b',transport),preview=gateway.preview(context),response=await gateway.send(preview.id,preview.hash);
+if(calls.find(c=>c.url===DESTINATION)?.body!==preview.serializedBody||calls.some(c=>!c.url.startsWith('http://127.0.0.1:11434/')))throw new Error('Provider destination or approved bytes changed.');
+for(const value of ['Avery','Fiction Lane','DEMO-ACCT','4200.00','2026-09-30','base64','bbox'])if(preview.serializedBody.includes(value))throw new Error('Literal or image data in AI request.');
+await writeFile('artifacts/photo-real-model.json',JSON.stringify({preview,response,calls,context},null,2));
+console.log(JSON.stringify({source:'real Ollama',model:response.model,latencyMs:response.latencyMs,derivedFindings:response.summary.findings.length,approvedBytesEqual:true,literalValuesSent:0,hash:response.requestHash}));

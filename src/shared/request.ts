@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { FIELD_NAMES, FINDING_IDS, STATUSES, type Finding, type ReviewDocument } from './documents';
 import type { Purpose } from './workflow';
+import { photoContextSchema } from './photo';
 const BASE_IDS=['name','address','account','balance','intake_fields','statement_fields'] as const;
 const factSchema = z.strictObject({ id: z.enum(FINDING_IDS), status: z.enum(STATUSES), missing: z.array(z.enum(FIELD_NAMES)).max(16) });
 const baselineSchema = z.strictObject({
@@ -38,7 +39,7 @@ const workflowSchema=z.strictObject({
       ctx.addIssue({code:'custom',message:'Invalid workflow finding relationship.'});
   }
 });
-export const contextSchema=z.union([baselineSchema,workflowSchema]);
+export const contextSchema=z.union([baselineSchema,workflowSchema,photoContextSchema]);
 export type ReducedContext = z.infer<typeof contextSchema>;
 export function minimize(findings: Finding[], docs: ReviewDocument[],purpose: Purpose='consistency-review'): ReducedContext {
   if(purpose==='financial-resources'||docs.some(d=>d.template==='schengen-de-demo-v1'))return contextSchema.parse({case:'CASE-A',templates:docs.map(d=>d.template).sort((a,b)=>a==='client-intake-v1'?-1:b==='client-intake-v1'?1:a.localeCompare(b)),purpose,policy:'adult-tourism-demo-v1',
@@ -64,9 +65,18 @@ export const FOLLOW_UPS = {
 export const OVERVIEWS = ['Some checks need human review before this case is considered complete.', 'The available consistency checks are complete with no differences found.'] as const;
 const allExplanations = Object.values(EXPLANATIONS).flat();
 const allFollowUps = Object.values(FOLLOW_UPS).flat();
+export const PHOTO_EXPLANATIONS={consistent:['The selected fields were read from the visible part of the photo.','The reviewer confirmed the visible OCR text.'],needs_review:['Some selected fields were not read; they may be covered, absent or unclear.','Photo text needs human confirmation; OCR can make mistakes.']} as const;
+export const PHOTO_FOLLOW_UPS={consistent:['Keep the covered areas private and review the visible source.'],needs_review:['Review the visible text or retake a clearer photo. Do not uncover private details just to complete a check.']} as const;
+export function allowedSentences(context:ReducedContext,fact:ReducedContext['findings'][number]){
+  if('source' in context){
+    const status=fact.status==='consistent'?'consistent':'needs_review';
+    return {explanation:[PHOTO_EXPLANATIONS[status][fact.id==='photo_quality'?1:0]],follow_up:PHOTO_FOLLOW_UPS[status]};
+  }
+  return {explanation:EXPLANATIONS[fact.status],follow_up:FOLLOW_UPS[fact.status]};
+}
 export const summarySchema = z.strictObject({
   overview: z.enum(OVERVIEWS),
-  findings: z.array(z.strictObject({ id: z.enum(FINDING_IDS), explanation: z.enum(allExplanations), follow_up: z.enum(allFollowUps) })).min(2).max(7),
+  findings: z.array(z.strictObject({ id: z.enum(FINDING_IDS), explanation: z.enum([...allExplanations,...Object.values(PHOTO_EXPLANATIONS).flat()]), follow_up: z.enum([...allFollowUps,...Object.values(PHOTO_FOLLOW_UPS).flat()]) })).min(2).max(7),
 });
 export type ReviewSummary = z.infer<typeof summarySchema>;
 export function validateSummary(value: unknown, context: ReducedContext): ReviewSummary {
@@ -76,14 +86,15 @@ export function validateSummary(value: unknown, context: ReducedContext): Review
   if (summary.overview !== expectedOverview) throw new Error('AI overview contradicts the deterministic findings.');
   for (const item of summary.findings) {
     const fact = context.findings.find(f => f.id === item.id)!;
-    if (!(EXPLANATIONS[fact.status] as readonly string[]).includes(item.explanation) || !(FOLLOW_UPS[fact.status] as readonly string[]).includes(item.follow_up))
+    const allowed=allowedSentences(context,fact);
+    if (!(allowed.explanation as readonly string[]).includes(item.explanation) || !(allowed.follow_up as readonly string[]).includes(item.follow_up))
       throw new Error('AI explanation contradicts a finding or introduces an unsupported claim.');
   }
   return summary;
 }
 export function ruleSummary(context: ReducedContext): ReviewSummary {
   return { overview: context.findings.every(f => f.status === 'consistent') ? OVERVIEWS[1] : OVERVIEWS[0],
-    findings: context.findings.map(f => ({ id: f.id, explanation: EXPLANATIONS[f.status][0], follow_up: FOLLOW_UPS[f.status][0] })) };
+    findings: context.findings.map(f => ({ id: f.id, explanation: allowedSentences(context,f).explanation[0], follow_up: allowedSentences(context,f).follow_up[0] })) };
 }
 export interface RequestPreview {
   id: string; hash: string; serializedBody: string; destination: string; model: string; expiresAt: number;

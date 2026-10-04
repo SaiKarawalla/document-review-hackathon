@@ -1,3 +1,7 @@
+## Latest Phase 7 extension — authoritative
+Current target remains iPhone Expo Go + paired-Mac Qwen; older Mac-only text below is historical. Photo path: camera/picker -> private cache copy (deleted) -> phone-local editor -> opaque pixel flatten/original backing-canvas release -> embedded WASM OCR -> conservative cover-line exclusion -> local selected-field overview/correction/glossary with actual word boxes -> strict photo enum context -> encrypted private companion -> protected loopback API -> exact stored request preview/approval -> real loopback Ollama -> semantic validation. Neither photo/raw text/literal values/coordinates enter the model gateway. All processing phases report real state. Photo screen English; existing five-language PDF/visa/Proof flows preserved. Background/reset/Back clear photo workspace and approvals; original user Photos assets remain. See PHOTO-REVIEW and latest PROGRESS for scope/evidence.
+
+
 # Current hackathon runtime
 
 Latest user chooses Mac demo: browser-local PDF extraction/rendering → deterministic comparison → strict minimized context → protected loopback Node gateway → local Ollama/Qwen. Optional event Featherless and ten presentation locales are planned, not implemented; see LANGUAGES-AND-SPONSOR-PLAN.md. Repo PUBLIC, no paid services. The standalone native branch is preserved in the same repository and simulator-tested, but physical phone installation is deferred. Earlier native/paired-Mac sections below record existing implementations/history.

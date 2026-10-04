@@ -67,7 +67,7 @@ export function correctField(doc: ReviewDocument, name: FieldName, value: string
 }
 export const STATUSES = ['consistent', 'conflicting', 'absent', 'needs_review', 'not_comparable'] as const;
 export type FindingStatus = typeof STATUSES[number];
-export const FINDING_IDS = ['name', 'address', 'account', 'balance', 'intake_fields', 'statement_fields', 'visa_fields', 'visa_dates', 'proof_resources'] as const;
+export const FINDING_IDS = ['name', 'address', 'account', 'balance', 'intake_fields', 'statement_fields', 'visa_fields', 'visa_dates', 'proof_resources', 'photo_fields', 'photo_quality'] as const;
 export type FindingId = typeof FINDING_IDS[number];
 export interface Finding {
   id: FindingId; label: string; status: FindingStatus; explanation: string; evidence: Field[];

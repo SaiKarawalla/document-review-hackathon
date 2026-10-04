@@ -9,6 +9,7 @@
     "scheme": "document-review",
     "plugins": [
       "expo-router",
+      ["expo-image-picker", {"cameraPermission":"Take a document photo for local review.","photosPermission":"Choose a document photo for local review.","microphonePermission":false}],
       [
         "llama.rn",
         {

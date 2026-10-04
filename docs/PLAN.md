@@ -1,6 +1,6 @@
 # Current phase plan — latest 2026-10-03 steering
 
-Continue this repository, one phase at a time. **Phase 6 is complete for the simulator-verified prototype. Stop here. Do not start Phase 7.** Repo is PUBLIC by user instruction. Never spend money or activate paid usage.
+Continue this repository, one phase at a time. **Phase 7 photo review is now implemented and verified in Expo Go simulator. Stop at this checkpoint.** Phase 6 remains complete. Repo is PUBLIC by user instruction. Never spend money or activate paid usage.
 
 | Phase | Work | Status |
 | --- | --- | --- |
@@ -11,7 +11,7 @@ Continue this repository, one phase at a time. **Phase 6 is complete for the sim
 | 4 | Core full-flow/privacy verification and initial polish | Complete |
 | 5 | Reproducible setup, demo/licenses, free-only gated CI | Complete; hosted CI unverified/disabled |
 | 6 | Selected visa PDF, Proof Mode/context firewall, **five languages**, **Expo Go iPhone + paired Mac Ollama**, tests and handoff | Complete; physical phone remains unverified |
-| 7 | Separately requested visual revamp and optional verified-free Featherless | Planned; not started |
+| 7 | Camera/import, opaque covers before local OCR, visible-text review, word highlights/glossary, honest stages and minimized real Qwen explanation | Complete for bounded simulator-tested prototype; physical camera/picker unverified |
 
 ## Phase 6
 
@@ -25,11 +25,15 @@ Proof Mode purpose **Prove Financial Resources**, fixed versioned fictional poli
 
 Acceptance: actual filled PDF parsing and sources, visa matching/missing/conflicting/reversed dates, single-document behavior, threshold boundaries/invalid evidence, old intake regressions, malicious notes/identifier exclusion, wrong-purpose/schema/output rejection, approval invalidation, all five UI languages and exact body equality/real local inference. Run root checks and mobile typecheck/lint; actual Expo Go rehearsal; identify physical-phone gaps separately. Update records, commit/push, show actual captures.
 
-## Phase 7 — wait for separate instruction
+## Phase 7 — newly authorized photo extension
+
+Latest user explicitly authorized a Google Lens-style photo experience and said continue after a short pause. Implemented in existing Expo Go app, preserving PDF workflows. Local pixel covers before OCR, undo before locking, actual OCR word boxes/local definitions, visible-text correction/confirmation, real progress callbacks, cancellation/reset/background lifecycle. Qwen receives derived statuses only via existing approval gateway. Selected English bank/intake labels first; unsupported legal/SSI/drawings cannot receive an invented structured review. New photo UI is English; baseline five-language PDF flow is preserved. See PHOTO-REVIEW.md and latest PROGRESS for actual tests, latency and physical-camera gaps. Stop after source/docs commit/push. No next phase authorized.
+
+The earlier generic visual-revamp/cloud proposal below remains optional scope, not work to start automatically.
 
 Visual revamp requested by user for later. Optional Featherless is an **event resource**, advertised one-month participant access via event email. Winner-only $300 is not participant balance. Activate only after actual access/key/expiry/free hard-stop is verified; no card, upgrades, renewal, paid overage or top-ups. Credentials server-side, explicit cloud choice/accurate leaving-device label, same exact-body approval and semantic validation. Quota failure stops cloud and offers local with fresh approval. Local Ollama remains the working demo; account/credits unavailable is not a feature blocker.
 
-No extra locales beyond the five are promised. No arbitrary OCR, account/database, enterprise integration or voice scope.
+No extra locales beyond the five baseline display languages are promised. Authorized photo extension adds bounded English OCR. No account/database, enterprise integration or voice scope.
 
 ## Resume
 

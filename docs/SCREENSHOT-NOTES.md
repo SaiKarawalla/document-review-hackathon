@@ -8,3 +8,7 @@ All four original JPGs were available and visually inspected. Raw originals are 
 4. IMG_1242.JPG → judging-rubric.jpg. Weights verified: Technical Execution 20%, Innovation & Creativity 15%, Impact & Usefulness 20%, Completeness & Working Demo 15%, Design & UX 10%, Presentation 10%, Judge's Preference 10%. Ratings 1 weak / 3 solid / 5 outstanding. Outstanding emphasizes well-built edge handling, novelty, meaningful scalable problem, polished reliable end-to-end demo, intuitive/cohesive enjoyable UX, compelling confident story, judge preference.
 
 Constraint: prioritize reliable parsing, evidence, exact request boundary and rehearsed complete demo. Prize categories do not authorize RAG, agents, voice or rural claims. Only uncertain spelling above; remaining relevant slide content was readable.
+
+
+## Phase 7 user troubleshooting screenshot
+Newest user image is a Safari screen displaying Pairing request rejected for the private /paired endpoint. It is troubleshooting evidence, not judging feedback. Visually inspected in conversation; original copied unchanged to ignored references/screenshots/phase7-pairing-opened-in-safari.png with mapping/checksum in phase7-pairing-provenance.txt. App opens through exp://10.171.164.143:8082; private QR scanned inside app. No redemption code/credential from screenshots committed.

@@ -6,7 +6,9 @@ A local hackathon prototype for finding missing or conflicting information acros
 
 **Phase 6 implemented:** selected typed German/English four-page Schengen application review, single-document missing/date checks, name comparison with the synthetic bank statement, and purpose-specific Proof Mode with measured inclusion/exclusion decisions. **Five presentation languages:** English, Spanish, Hindi, Simplified Chinese and French. Qwen’s real validated canonical response is displayed with labeled local translations; original evidence and exact request bytes stay unchanged. Supported document formats are separate from UI language.
 
-Original intake/statement comparison remains available on phone and the preserved [Mac web baseline](http://127.0.0.1:8787). This is consistency review under sample rules, not authenticity or visa eligibility. Standalone phone-Qwen source/results are preserved separately; physical installation is deferred. **Phase 7 visual revamp and optional verified-free Featherless are not started. No paid service is enabled.**
+**Phase 7 photo review:** camera/import, opaque scribble covers before phone-local English OCR, visible field overview/correction, real word highlights/local definitions, clear stages and exact approved derived-only Qwen explanation. Selected English bank/intake layouts; [photo workflow and limits](docs/PHOTO-REVIEW.md). Final Expo Go simulator flow passed56.183seconds/0failures;146 core tests and mobile typecheck/lint passed. Physical camera/picker rehearsal remains required. New photo UI is English; five-language PDF review stays available.
+
+Original intake/statement comparison remains available on phone and the preserved [Mac web baseline](http://127.0.0.1:8787). This is consistency review under sample rules, not authenticity or visa eligibility. Standalone phone-Qwen source/results are preserved separately; physical installation is deferred. **No paid/cloud service is enabled.**
 
 Public repository: [SaiKarawalla/document-review-hackathon](https://github.com/SaiKarawalla/document-review-hackathon). No public deployment or paid service is required.
 

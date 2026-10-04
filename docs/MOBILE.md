@@ -10,6 +10,7 @@ From this existing repository:
 npm ci --no-audit --no-fund
 npm run build
 npm run mobile:assets
+npm run mobile:photo-assets
 cd mobile
 npm ci --no-audit --no-fund
 npm run typecheck
@@ -33,6 +34,7 @@ Do not start a duplicate Ollama daemon if already listening. New machines need O
 
 1. Install/open current Expo Go on iPhone. Current physical iOS Expo Go requires the **same free Expo account** as CLI; Mac already authenticated as `karawalla`. Sign in yourself; never share a password with the assistant. Simulator is exempt. [Official Expo Go changelog](https://expo.dev/changelog/expo-go-login).
 2. Scan Metro’s **app-opening QR** with iPhone Camera. Current LAN URL: `exp://10.171.164.143:8082` (IP can change; use the current terminal/QR).
+   `http://10.171.164.143:8790/paired` is the encrypted pairing API, not the Expo app. Opening it in Safari returns a rejection. Use the Expo URL/QR above, then scan the private pairing QR inside the app.
 3. In Document Review, tap **Pair Mac for local AI** and scan the separate **private pairing QR** from `artifacts/mobile-pairing.html` on the Mac. This expires one hour after companion startup; restart companion and re-pair if expired. Do not share/commit that page or pairing JSON. Manual paste is available for simulator/testing.
 4. Choose language: English / Español / हिन्दी / 简体中文 / Français. Load Address conflict for the original demo; Visa name conflict or Visa only for the new review; Visa + statement then Prove Financial Resources for Proof Mode.
 5. Inspect evidence and original PDF pages. For Proof Mode, expand inclusion/exclusion decisions, check selected values and confirm selected evidence. Policy is explicitly fictional: USD3,000, statement within45days of2026-10-03; no visa eligibility conclusion.
@@ -46,5 +48,7 @@ Phone-local PDF.js runs in a disposable network-disabled WebView, with page/exce
 Accepted: English client-intake-v1 and bank-statement-v1; selected four-page DE/EN Schengen typed reference layout. Not arbitrary visas, passport-page photos, scans/handwriting, drawing PDFs or unrelated files. Five UI languages do not imply five-language document parsing. No training required to hide data: code excludes values before model access.
 
 ## Verification status
+
+Phase 7 adds separate English photo OCR/cover/word-highlight/glossary review. See [PHOTO-REVIEW](PHOTO-REVIEW.md) and latest PROGRESS. Final Expo Go photo flow passed56.183seconds/0failures, including real Qwen;146 core tests and mobile typecheck/lint passed. Existing text-layer visa PDF support is preserved; photo support does not add arbitrary visa/legal/SSI parsing. Physical camera/picker remains unverified.
 
 130 core tests, web build and mobile typecheck/lint passed; real Phase6 model checks passed (5.85s missing visa;4.19s confirmed proof), exact approved/outgoing body equality and checked raw-value exclusion. Full ExpoGo Phase6 UI rehearsal passed:116.186seconds,0failures; all5 languages, visa evidence/missing/name cases, proof counts/confirmation, exact preview/approval and real paired Ollama. See PROGRESS. Physical iPhone Camera/Files/login/network remains unverified until the actual phone opens the app. Previous simulator/native Release checks are recorded separately. Mobile dependency advisories remain unresolved (29,19high/10moderate); no paid service or incompatible forced upgrade enabled.

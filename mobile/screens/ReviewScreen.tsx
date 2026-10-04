@@ -14,6 +14,7 @@ import type { Pairing } from '../../src/shared/mobile-protocol';
 import { companion, readPairing, verifyPreview } from '../lib/companion';
 import { PdfEngine, type PdfEngineHandle } from '../components/PdfEngine';
 import { FIXTURES } from '../generated/fixtures';
+import PhotoLens from '../components/PhotoLens';
 const LocaleContext=createContext<Locale>('en');
 function Text({raw=false,children,...props}:TextProps & {raw?:boolean}){
   const locale=useContext(LocaleContext);const parts=React.Children.toArray(children);
@@ -40,6 +41,7 @@ export default function ReviewScreen(){
   const [permission,requestPermission]=useCameraPermissions();
   const revision=useRef(0),operation=useRef<AbortController|undefined>(undefined);
   const [evidenceOpen,setEvidenceOpen]=useState(false);
+  const [photoOpen,setPhotoOpen]=useState(false);
   const [locale,setLocale]=useState<Locale>('en'),[purpose,setPurpose]=useState<Purpose>('consistency-review');
   const findings=reviewCase(docs,purpose),context=findings.length?minimize(findings,docs,purpose):undefined;
   const decisions=evidenceDecisions(docs,purpose),selected=decisions.filter(d=>d.included);
@@ -52,7 +54,7 @@ export default function ReviewScreen(){
     if(p && pairingRef.current)void companion(pairingRef.current,{action:'cancel',id:p.id}).catch(()=>{});
     setPreview(undefined);setApproved(false);setResult(undefined);setBusy('');setFullRequest(false);
   }
-  function reset(){invalidate();sourceEngine.current?.cancel();replace([]);setSource(undefined);setEdit(undefined);setError('');setExpanded([]);setShowConsistent(false);setEvidenceOpen(false);setPurpose('consistency-review');}
+  function reset(){invalidate();sourceEngine.current?.cancel();replace([]);setSource(undefined);setEdit(undefined);setError('');setExpanded([]);setShowConsistent(false);setEvidenceOpen(false);setPurpose('consistency-review');setPhotoOpen(false);}
   useEffect(()=>{const sub=AppState.addEventListener('change',state=>{if(state==='background'){reset();setPairing(undefined);pairingRef.current=undefined;setHealth(undefined);}});return ()=>sub.remove();},[]);
   useEffect(()=>{if(source){void sourceEngine.current?.run({mode:'render',base64:source.doc.base64,id:source.doc.id,filename:source.doc.filename,page:source.field.page??1}).catch(e=>setError(e.message));}},[source]);
   async function localFiles(files:{filename:string;base64:string}[],append=false){
@@ -112,6 +114,7 @@ export default function ReviewScreen(){
     }catch(e){if(rev===revision.current)setError((e as Error).message);}finally{if(rev===revision.current){setBusy('');setApproved(false);setPreview(undefined);previewRef.current=undefined;operation.current=undefined;}}
   }
   function save(){if(!edit)return;invalidate();replace(docsRef.current.map(d=>d.id===edit.id?{...correctField(d,edit.field,edit.value),base64:d.base64}:d));setEdit(undefined);}
+  if(photoOpen)return <PhotoLens pairing={pairing} onClose={()=>setPhotoOpen(false)}/>;
   return <LocaleContext.Provider value={locale}><SafeAreaView style={s.safe}><StatusBar style="dark"/><View style={s.header}><Text style={s.brand}>Document Review</Text><Pressable accessibilityRole="button" onPress={reset} testID="reset"><Text style={s.link}>Reset</Text></Pressable></View>
     {!!error&&<Text accessibilityRole="alert" style={s.error}>{error}</Text>}
     <ScrollView contentContainerStyle={s.content} keyboardShouldPersistTaps="handled">
@@ -122,6 +125,7 @@ export default function ReviewScreen(){
         <View style={s.chips}>{scenarios.map(([id,label])=><Pressable key={id} accessibilityRole="button" onPress={()=>setScenario(id)} disabled={!!busy} style={[s.chip,scenario===id&&s.selected]}><Text style={scenario===id?s.selectedText:s.chipText}>{label}</Text></Pressable>)}</View>
         <Button title="Load demo pair" testID="load-demo" disabled={!!busy} onPress={()=>void localFiles(FIXTURES[scenario])}/>
         <Button title="Choose PDFs from Files" secondary disabled={!!busy||docs.length===2} onPress={()=>void choose()}/>
+        <Button title="Scan and cover a photo" secondary testID="open-photo" disabled={!!busy} onPress={()=>{invalidate();setPhotoOpen(true);}}/>
       </View>
       {!!busy&&<View style={s.card}><ActivityIndicator color="#245449"/><Text style={s.body}>{busy}</Text><Button title="Cancel" secondary onPress={invalidate}/></View>}
       {docs.map(doc=><View key={doc.id} style={s.card}><Text style={s.eyebrow}>{doc.template==='client-intake-v1'?'CLIENT INTAKE':doc.template==='schengen-de-demo-v1'?'SCHENGEN APPLICATION':'BANK STATEMENT'}</Text><Text raw style={s.small}>{doc.filename} • {doc.pages} page(s) • phone-local</Text>

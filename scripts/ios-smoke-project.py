@@ -139,6 +139,62 @@ final class MobileSmoke: XCTestCase {
         XCTAssertTrue(app.staticTexts["AI explanation • Ollama on Mac"].exists)
         app.buttons["Reset"].tap()
     }
+    func testPhotoLensRedactionLocalOCRAndRealAI() throws {
+        continueAfterFailure=false
+        freshSession();reach("locale-en").tap();app.buttons["Reset"].tap()
+        reach("Pair Mac for local AI").tap()
+        let code=app.textViews["Private pairing code"]
+        UIPasteboard.general.string=PAIRING_LITERAL
+        code.tap();code.press(forDuration:1.2);app.menuItems["Paste"].tap()
+        if app.alerts.buttons["Allow Paste"].exists {app.alerts.buttons["Allow Paste"].tap()}
+        reach("Connect Mac").tap()
+        XCTAssertTrue(app.staticTexts["qwen2.5:1.5b • ready on Mac"].waitForExistence(timeout:15))
+        reach("Scan and cover a photo").tap()
+        XCTAssertTrue(app.staticTexts["Cover it. Understand it."].waitForExistence(timeout:20))
+        reach("Try synthetic statement photo").tap()
+        let analyze=app.webViews.buttons["Analyze visible photo"].firstMatch
+        XCTAssertTrue(analyze.waitForExistence(timeout:20))
+        // Scroll so the entire WebView toolbar is visible, then cover the sample account.
+        let photo=app.webViews.images["Document photo"].firstMatch
+        XCTAssertTrue(photo.waitForExistence(timeout:10))
+        for _ in 0..<6 {if photo.frame.minY+photo.frame.width*0.48 < app.frame.maxY-100 {break};app.swipeUp()}
+        let frame=photo.frame
+        print("Photo canvas bounds: \(frame)")
+        let x0=frame.minX+frame.width*0.27, x1=frame.minX+frame.width*0.75
+        let y=frame.minY+frame.width*0.480
+        let origin=app.coordinate(withNormalizedOffset:CGVector(dx:0,dy:0))
+        origin.withOffset(CGVector(dx:x0,dy:y)).press(forDuration:0.08,thenDragTo:origin.withOffset(CGVector(dx:x1,dy:y)))
+        XCTAssertTrue(app.webViews.buttons["Undo cover"].firstMatch.isEnabled,"A real cover stroke must be registered")
+        shot("photo-native-covered-before-ocr")
+        reach("Analyze visible photo").tap()
+        XCTAssertTrue(app.staticTexts["What was read"].waitForExistence(timeout:50),"Actual WKWebView OCR must finish")
+        XCTAssertFalse(app.staticTexts["DEMO-ACCT-1001"].exists,"Covered identifier must not appear")
+        reach("Show term list").tap();reach("Closing balance").tap()
+        XCTAssertTrue(app.staticTexts["The balance shown at the end of this statement period. It is not monthly income or a promise of money available today."].waitForExistence(timeout:5))
+        shot("photo-native-term-definition");reach("Close definition").tap()
+        reach("I checked the visible text").tap()
+        reach("Preview photo AI request").tap()
+        XCTAssertTrue(app.buttons["View exact photo request"].waitForExistence(timeout:15))
+        reach("View exact photo request").tap()
+        let body=app.staticTexts.matching(NSPredicate(format:"label BEGINSWITH %@", "{\"model\"" )).firstMatch
+        XCTAssertTrue(body.waitForExistence(timeout:5))
+        XCTAssertTrue(body.label.contains("redacted-photo"))
+        for value in ["Avery Example","Fiction Lane","DEMO-ACCT","4200.00","2026-09-30","base64"] {XCTAssertFalse(body.label.contains(value))}
+        shot("photo-native-exact-preview");reach("Close photo request").tap()
+        let approval=app.otherElements["Approve photo minimized request"].firstMatch
+        let send=app.buttons["Explain approved photo review"].firstMatch
+        approval.tap()
+        let enabled=NSPredicate(format:"enabled == true")
+        if XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:enabled,object:send)],timeout:2) != .completed {approval.tap()}
+        XCTAssertEqual(XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:enabled,object:send)],timeout:5),.completed,"Explicit approval must enable Send")
+        reach("Explain approved photo review").tap()
+        XCTAssertTrue(app.staticTexts["AI explanation · real Qwen"].waitForExistence(timeout:70));shot("photo-native-real-qwen")
+        reach("New photo").tap()
+        XCTAssertFalse(app.staticTexts["AI explanation · real Qwen"].exists)
+        XCTAssertFalse(app.staticTexts["Avery Example"].exists)
+        reach("Back").tap()
+        XCTAssertTrue(app.staticTexts["Document Review"].exists)
+    }
     func testOtherRealPdfCasesAndBackgroundClear() throws {
         continueAfterFailure=false
         freshSession()

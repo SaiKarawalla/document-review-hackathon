@@ -12,6 +12,7 @@
     "fixtures": "tsx scripts/fixtures.ts",
     "check": "npm run typecheck && npm test && npm run build",
     "mobile:assets": "tsx scripts/build-mobile-assets.ts",
+    "mobile:photo-assets": "tsx scripts/build-photo-assets.ts",
     "mobile:companion": "tsx scripts/mobile-companion.ts",
     "mobile:model": "node scripts/download-phone-model.mjs"
   },
@@ -23,9 +24,11 @@
     "pdfjs-dist": "^6.4.299",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
+    "tesseract.js": "^6.0.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@tesseract.js-data/eng": "^1.0.0",
     "@types/node": "^26.6.4",
     "@types/qrcode": "^1.5.6",
     "@types/react": "^19.3.0",
