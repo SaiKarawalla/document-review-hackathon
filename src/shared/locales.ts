@@ -19,7 +19,7 @@ export const DISPLAY: Record<string,Translations> = {
 'Five display languages. Original documents stay in their original language.':['Cinco idiomas de interfaz. Los documentos conservan su idioma original.','इंटरफ़ेस की पाँच भाषाएँ। दस्तावेज़ अपनी मूल भाषा में रहते हैं।','五种界面语言。原始文档保留原语言。','Cinq langues d’affichage. Les documents conservent leur langue d’origine.'],
 '1. Add documents':['1. Añadir documentos','1. दस्तावेज़ जोड़ें','1. 添加文档','1. Ajouter des documents'],
 'Synthetic intake v1 / selected DE–EN Schengen layout + statement v1 • two text PDFs, 5 MiB each':['Formulario ficticio v1 / formato Schengen DE–EN seleccionado + extracto v1 • dos PDF de texto, 5 MiB cada uno','काल्पनिक इंटेक v1 / चुना गया DE–EN शेंगेन फ़ॉर्म + बैंक स्टेटमेंट v1 • दो टेक्स्ट PDF, प्रत्येक 5 MiB','模拟登记表 v1 / 指定德英申根表格 + 银行对账单 v1 • 两份文本 PDF，每份 5 MiB','Fiche fictive v1 / format Schengen DE–EN sélectionné + relevé v1 • deux PDF texte de 5 MiB chacun'],
-'Address conflict':['Adresse distinta','पते में अंतर','地址冲突','Adresses différentes'],
+'Address conflict':['Dirección distinta','पते में अंतर','地址冲突','Adresses différentes'],
 'Matching':['Coincidentes','मेल खाते','一致','Concordance'],
 'Missing fields':['Datos faltantes','जानकारी गायब','缺失字段','Champs manquants'],
 'Embedded instruction':['Instrucción incrustada','दस्तावेज़ में निर्देश','嵌入指令','Instruction intégrée'],
