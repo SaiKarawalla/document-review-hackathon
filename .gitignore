@@ -4,6 +4,7 @@ dist/
 .env.*
 !.env.example
 references/screenshots/
+references/design/
 references/ollama/
 references/future-features/
 references/official-forms/

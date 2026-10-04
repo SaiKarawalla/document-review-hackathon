@@ -28,3 +28,18 @@ d.ellipse((250,300,650,700),outline='orange',width=18);d.line((100,900,350,600,6
 d.text((55,40),'SYNTHETIC DRAWING - NOT A DOCUMENT',font=ImageFont.truetype(font,22),fill='black')
 drawing.save(folder/'photo-drawing.png',optimize=True)
 print('Generated three synthetic photo fixtures; account cover region x245..735/y456..504.')
+
+# Optional PDF wrapper for a screenshot/Photos demo without a printer.
+# This image-based PDF is not a supported input for the text-PDF comparison.
+from reportlab.pdfgen.canvas import Canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.utils import ImageReader
+out=root/'output'/'pdf'/'synthetic-bank-statement-photo-demo.pdf'
+out.parent.mkdir(parents=True,exist_ok=True)
+c=Canvas(str(out),pagesize=letter)
+c.setTitle('Synthetic bank statement - screenshot photo demo')
+c.drawImage(ImageReader(str(folder/'photo-statement.png')),36,58,width=540,height=675,mask='auto')
+c.setFont('Helvetica',8);c.setFillColorRGB(.4,.4,.4)
+c.drawString(36,28,'PHOTO DEMO: screenshot this page, then choose the screenshot in the app. All details are invented.')
+c.save()
+print('Generated synthetic screenshot/photo PDF; no printer required.')

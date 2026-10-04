@@ -1,6 +1,6 @@
 # Current phase plan — latest 2026-10-03 steering
 
-Continue this repository, one phase at a time. **Phase 7 photo review is now implemented and verified in Expo Go simulator. Stop at this checkpoint.** Phase 6 remains complete. Repo is PUBLIC by user instruction. Never spend money or activate paid usage.
+Continue this repository, one phase at a time. **Phase 7 redesign revision is COMPLETE and verified after the completed photo extension. Stop after this revision; the next full human rehearsal is separate.** Phase 6 remains complete. Repo is PUBLIC by user instruction. Never spend money or activate paid usage.
 
 | Phase | Work | Status |
 | --- | --- | --- |
@@ -11,7 +11,11 @@ Continue this repository, one phase at a time. **Phase 7 photo review is now imp
 | 4 | Core full-flow/privacy verification and initial polish | Complete |
 | 5 | Reproducible setup, demo/licenses, free-only gated CI | Complete; hosted CI unverified/disabled |
 | 6 | Selected visa PDF, Proof Mode/context firewall, **five languages**, **Expo Go iPhone + paired Mac Ollama**, tests and handoff | Complete; physical phone remains unverified |
-| 7 | Camera/import, opaque covers before local OCR, visible-text review, word highlights/glossary, honest stages and minimized real Qwen explanation | Complete for bounded simulator-tested prototype; physical camera/picker unverified |
+| 7 | Camera/import, opaque covers before local OCR, visible-text review, word highlights/glossary, honest stages and minimized real Qwen explanation | Photo + redesign revision complete; final simulator checks passed; physical phone unverified |
+
+## Phase 7 redesign revision - complete checkpoint
+
+Airbnb-inspired phone redesign based on actual official mobile reference images, Expo Router Home/Review/Settings, simplified progressive PDF/photo steps, light/dark/system appearance and offline interactive globe. Country list: United States, United Kingdom, Spain, Mexico, Mauritius, India, China, Singapore, France, Canada. Five languages; countries are preferences and do not add visa/legal adapters. Preserve all request/source/privacy boundaries. Prepare synthetic PDF/image demo without a printer. Read REDESIGN.md. Finish focused checks, visual screenshots, records and public source push; then stop. No cloud/paid activation or next feature phase.
 
 ## Phase 6
 

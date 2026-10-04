@@ -36,6 +36,56 @@ final class MobileSmoke: XCTestCase {
         app.activate();closeExpoTools()
         XCTAssertFalse(app.buttons["Pair a different Mac"].exists,"Background must clear pairing")
     }
+    func testRedesignNavigationThemesCountriesAndPDF() throws {
+        continueAfterFailure = false
+        freshSession()
+        XCTAssertTrue(app.buttons["Home tab"].waitForExistence(timeout:25))
+        app.buttons["Settings tab"].tap()
+        reach("locale-en").tap();reach("theme-light").tap()
+        app.buttons["Home tab"].tap()
+        XCTAssertTrue(app.buttons["Compare documents"].waitForExistence(timeout:5))
+        shot("redesign-home-light")
+        reach("country-picker").tap()
+        XCTAssertTrue(app.buttons["country-US"].waitForExistence(timeout:5))
+        for id in ["US","GB","ES","MX","MU","IN","CN","SG","FR","CA"] {
+            reach("country-"+id).tap()
+            XCTAssertTrue(app.buttons["country-"+id].isSelected,"Country selection must update")
+        }
+        shot("redesign-country-canada")
+        reach("country-US").tap();reach("Done").tap()
+        XCTAssertTrue(app.buttons["Home tab"].waitForExistence(timeout:5))
+        app.buttons["Settings tab"].tap()
+        for (id,title) in [("es","Tus preferencias"),("hi","आपकी पसंद"),("zh-Hans","你的偏好"),("fr","Vos préférences"),("en","Your preferences")] {
+            reach("locale-"+id).tap()
+            XCTAssertTrue(app.staticTexts[title].exists,"Display language must update new navigation")
+        }
+        reach("theme-dark").tap();shot("redesign-settings-dark")
+        app.buttons["Home tab"].tap();shot("redesign-home-dark")
+        reach("Compare documents").tap()
+        XCTAssertTrue(app.buttons["Try a demo"].waitForExistence(timeout:5))
+        reach("Try a demo").tap();reach("Load demo pair").tap()
+        XCTAssertTrue(app.staticTexts["What needs attention"].waitForExistence(timeout:25))
+        XCTAssertTrue(app.buttons["5 consistent checks • show"].exists,"Actual address conflict persists after redesign")
+        shot("redesign-review-dark")
+        reach("Review extracted fields").tap()
+        reach("Source Mailing address statement").tap()
+        XCTAssertTrue(app.staticTexts["Original PDF • page 1"].waitForExistence(timeout:10));shot("redesign-source-dark")
+        reach("Close source").tap()
+        reach("Review Mailing address statement").tap()
+        XCTAssertTrue(app.textViews["Confirmed value"].waitForExistence(timeout:5));reach("Cancel").tap()
+        reach("Proof Mode").tap();reach("Prove Financial Resources").tap()
+        XCTAssertTrue(app.buttons["Confirm selected evidence"].exists)
+        reach("Confirm selected evidence").tap();shot("redesign-proof-dark")
+        reach("Continue to AI").tap()
+        XCTAssertTrue(app.staticTexts["Explain with AI"].waitForExistence(timeout:5))
+        XCTAssertFalse(app.buttons["Send approved request"].exists,"No bypass around exact preview")
+        reach("Show rule-based summary (no AI)").tap()
+        XCTAssertTrue(app.staticTexts["Rule-based summary • no AI response"].waitForExistence(timeout:5));shot("redesign-ai-dark")
+        app.buttons["Reset"].tap()
+        XCTAssertTrue(app.buttons["Choose PDFs from Files"].waitForExistence(timeout:5))
+        app.buttons["Settings tab"].tap();reach("theme-light").tap()
+        app.buttons["Home tab"].tap();shot("redesign-home-final")
+    }
     func testActualMobileFlow() throws {
         continueAfterFailure = false
         freshSession()
@@ -79,7 +129,7 @@ final class MobileSmoke: XCTestCase {
         reach("Preview exact AI request").tap()
         XCTAssertTrue(app.buttons["View full exact request"].waitForExistence(timeout:15))
         reach("View full exact request").tap()
-        let body=app.staticTexts.matching(NSPredicate(format:"label BEGINSWITH %@", "{\"model\"" )).firstMatch
+        let body=app.staticTexts.matching(NSPredicate(format:"label CONTAINS %@", "{\"model\"" )).firstMatch
         XCTAssertTrue(body.waitForExistence(timeout:5))
         for excluded in ["Avery Example", "Fiction Lane", "Imaginary Avenue", "DEMO-ACCT", "4200.00", "2026-09-30"] {XCTAssertFalse(body.label.contains(excluded))}
         shot("phone-exact-preview")
@@ -126,7 +176,7 @@ final class MobileSmoke: XCTestCase {
         reach("Connect Mac").tap()
         XCTAssertTrue(app.staticTexts["qwen2.5:1.5b • ready on Mac"].waitForExistence(timeout:15))
         reach("Preview exact AI request").tap();reach("View full exact request").tap()
-        let body=app.staticTexts.matching(NSPredicate(format:"label BEGINSWITH %@", "{\"model\"" )).firstMatch
+        let body=app.staticTexts.matching(NSPredicate(format:"label CONTAINS %@", "{\"model\"" )).firstMatch
         XCTAssertTrue(body.waitForExistence(timeout:5))
         XCTAssertTrue(body.label.contains("financial-resources"))
         for excluded in ["Avery Example","DEMO-PASSPORT","DEMO-ACCT","4200.00","2026-09-30"] {XCTAssertFalse(body.label.contains(excluded))}
@@ -141,7 +191,7 @@ final class MobileSmoke: XCTestCase {
     }
     func testPhotoLensRedactionLocalOCRAndRealAI() throws {
         continueAfterFailure=false
-        freshSession();reach("locale-en").tap();app.buttons["Reset"].tap()
+        freshSession();app.buttons["Settings tab"].tap();reach("locale-en").tap();reach("theme-light").tap()
         reach("Pair Mac for local AI").tap()
         let code=app.textViews["Private pairing code"]
         UIPasteboard.general.string=PAIRING_LITERAL
@@ -149,8 +199,8 @@ final class MobileSmoke: XCTestCase {
         if app.alerts.buttons["Allow Paste"].exists {app.alerts.buttons["Allow Paste"].tap()}
         reach("Connect Mac").tap()
         XCTAssertTrue(app.staticTexts["qwen2.5:1.5b • ready on Mac"].waitForExistence(timeout:15))
-        reach("Scan and cover a photo").tap()
-        XCTAssertTrue(app.staticTexts["Cover it. Understand it."].waitForExistence(timeout:20))
+        app.buttons["Home tab"].tap();reach("Read a document photo").tap()
+        XCTAssertTrue(app.staticTexts["Read what you choose."].waitForExistence(timeout:20))
         reach("Try synthetic statement photo").tap()
         let analyze=app.webViews.buttons["Analyze visible photo"].firstMatch
         XCTAssertTrue(analyze.waitForExistence(timeout:20))
@@ -172,11 +222,11 @@ final class MobileSmoke: XCTestCase {
         reach("Show term list").tap();reach("Closing balance").tap()
         XCTAssertTrue(app.staticTexts["The balance shown at the end of this statement period. It is not monthly income or a promise of money available today."].waitForExistence(timeout:5))
         shot("photo-native-term-definition");reach("Close definition").tap()
-        reach("I checked the visible text").tap()
+        reach("I checked the visible text").tap();reach("Continue to photo AI").tap()
         reach("Preview photo AI request").tap()
         XCTAssertTrue(app.buttons["View exact photo request"].waitForExistence(timeout:15))
         reach("View exact photo request").tap()
-        let body=app.staticTexts.matching(NSPredicate(format:"label BEGINSWITH %@", "{\"model\"" )).firstMatch
+        let body=app.staticTexts.matching(NSPredicate(format:"label CONTAINS %@", "{\"model\"" )).firstMatch
         XCTAssertTrue(body.waitForExistence(timeout:5))
         XCTAssertTrue(body.label.contains("redacted-photo"))
         for value in ["Avery Example","Fiction Lane","DEMO-ACCT","4200.00","2026-09-30","base64"] {XCTAssertFalse(body.label.contains(value))}
@@ -193,7 +243,7 @@ final class MobileSmoke: XCTestCase {
         XCTAssertFalse(app.staticTexts["AI explanation · real Qwen"].exists)
         XCTAssertFalse(app.staticTexts["Avery Example"].exists)
         reach("Back").tap()
-        XCTAssertTrue(app.staticTexts["Document Review"].exists)
+        XCTAssertTrue(app.staticTexts["Review documents"].exists)
     }
     func testOtherRealPdfCasesAndBackgroundClear() throws {
         continueAfterFailure=false

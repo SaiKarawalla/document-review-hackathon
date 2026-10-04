@@ -12,6 +12,8 @@ Original intake/statement comparison remains available on phone and the preserve
 
 Public repository: [SaiKarawalla/document-review-hackathon](https://github.com/SaiKarawalla/document-review-hackathon). No public deployment or paid service is required.
 
+**Phase 7 redesign:** Home/Review/Settings, guided document and photo steps, Light/Dark/System appearance, and an offline globe with ten country preferences sharing five display languages. Country selection does not add visa rules or document formats. [Design and scope](docs/REDESIGN.md) · [No-printer demo](docs/DEMO.md) · [Synthetic screenshot PDF](output/pdf/synthetic-bank-statement-photo-demo.pdf).
+
 ## Open the existing demo on this Mac
 
 If the server is already running, open <http://127.0.0.1:8787>. Otherwise, with Ollama running as below:

@@ -12,3 +12,6 @@ Constraint: prioritize reliable parsing, evidence, exact request boundary and re
 
 ## Phase 7 user troubleshooting screenshot
 Newest user image is a Safari screen displaying Pairing request rejected for the private /paired endpoint. It is troubleshooting evidence, not judging feedback. Visually inspected in conversation; original copied unchanged to ignored references/screenshots/phase7-pairing-opened-in-safari.png with mapping/checksum in phase7-pairing-provenance.txt. App opens through exp://10.171.164.143:8082; private QR scanned inside app. No redemption code/credential from screenshots committed.
+
+## Phase 7 redesign visual references
+Browsed official Airbnb app release page, captured browser screenshots and downloaded official Explore/Profile phone images. Visually inspected rounded top panel, restrained typography, cards/spacing. Large1200px downloads timed out; complete640px versions retrieved. Raw references/hash provenance kept ignored in references/design; not app assets. New app uses original icons/content and local Natural Earth globe. No synthetic redesign mockup presented as a running app; final app captures come from actual ExpoGo simulator.

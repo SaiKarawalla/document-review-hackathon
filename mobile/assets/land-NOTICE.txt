@@ -1,0 +1,9 @@
+Globe coastline data: Natural Earth, 1:110m land.
+Natural Earth data is public domain:
+https://www.naturalearthdata.com/about/terms-of-use/
+Source accessed 2026-10-03:
+https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson
+Source SHA-256: 9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9
+Bundled land.json contains exterior rings rounded to two decimal places.
+Bundled SHA-256: 5bf9ae93ce6fea4ea551648346d74eef4e8b3422a3c6136206dc531c2ad9db4d
+No geolocation, map server, paid API or runtime asset download.

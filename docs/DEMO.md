@@ -1,3 +1,21 @@
+# Current phone demo - no printer required
+
+Expo Go with the redesigned Home / Review / Settings flow; Mac stays awake on the same trusted Wi-Fi running local Qwen. Older instructions below describe historical layouts/platforms. Use this section now.
+
+1. Settings: choose Light or Dark, set English for the short live script, and pair the current private Mac QR inside the app. Home: show the country globe; ten country choices set display-language defaults only.
+2. Home -> Compare documents -> Try a demo -> Visa + statement -> Load demo pair. Open actual source evidence, and show selected visa/bank name consistency. For a visible issue use Visa name conflict, Visa missing passport, or Address conflict. Use Review extracted fields for individual source/correction controls.
+3. Optional Proof Mode: choose Prove Financial Resources, inspect included/excluded evidence, and confirm selected evidence. These are fictional sample rules, not a visa decision.
+4. Continue to AI -> Preview exact AI request -> View full exact request. Show no name, passport/account number, amount, date or raw document. Approve and Send only when ready; show the real Qwen result and actual latency. Rule fallback is clearly labeled no AI.
+5. Home -> Read a document photo -> Try synthetic statement photo. Cover the complete account number, Analyze visible photo, inspect/correct visible text, open a term definition, and confirm. Continue to photo AI -> preview exact request -> explicit approval -> real Qwen. Never narrate a glossary or local overview as AI output.
+
+**No printer:** the built-in photo sample goes through the actual OCR engine. For the visible screenshot/import demonstration, open `output/pdf/synthetic-bank-statement-photo-demo.pdf` on your iPhone, screenshot the page, then Choose a photo in the app. The same full-resolution image is `public/fixtures/photo-statement.png`; save it to Photos for a reliable import backup. All details are invented. This image-based PDF is for screenshot/photo demonstration; do not upload it into the text-PDF comparison parser.
+
+Actual text-layer comparison files are `public/fixtures/visa-matching.pdf` + `public/fixtures/matching-statement.pdf`, or `address-conflict-intake.pdf` + `address-conflict-statement.pdf`. They are already available through built-in demo loading. Share only these synthetic files; never share the private pairing code/QR.
+
+Keep a copy of tested screenshots as a backup, explicitly label them recorded examples if live connectivity fails. Clear with Reset / New photo; backgrounding also clears the workspace and pairing. Physical iPhone camera/import/LAN and human demo timing need a short rehearsal.
+
+---
+
 # Latest Phase 7 phone presentation
 Current demo: Expo Go on iPhone, Mac stays awake with local Ollama. Older Mac-only/ten-language proposals below are historical. Open exp://10.171.164.143:8082; private /paired URL is not an app page. Two core features: supported-document missing/conflicting checks with source evidence; inspectable minimized AI request with explicit approval.
 

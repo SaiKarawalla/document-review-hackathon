@@ -1,3 +1,6 @@
+# Latest redesigned photo flow
+Home -> Read a document photo. Cover -> Review -> Explain. Review recognized fields, visible text, and covered-image highlights are optional disclosures; confirm visible text before Continue to photo AI. Pairing is in Settings. Exact request/hash remain in the full request dialog; approval remains explicit. No-printer PDF/PNG and script: DEMO.md. New photo interface/OCR remains English; themes apply to editor chrome, not document pixels. The details below describe the implemented core; older screen placement wording is historical.
+
 # Covered photo review — Phase 7
 
 Google Lens-style extension in the existing Expo Go app. Photos/text stay on the phone; Qwen explains derived review facts on the paired Mac. No cloud, payment, training or new repository.

@@ -1,3 +1,4 @@
+import {REDESIGN_DISPLAY} from './redesign-locales';
 export const LOCALES = [ ['en','English'], ['es','Español'], ['hi','हिन्दी'], ['zh-Hans','简体中文'], ['fr','Français'] ] as const;
 export type Locale = typeof LOCALES[number][0];
 type Translations = readonly [string,string,string,string];
@@ -143,7 +144,7 @@ export const DISPLAY: Record<string,Translations> = {
 export function translateDisplay(text: string,locale:Locale):string {
   if(locale==='en')return text;
   const index=LOCALES.findIndex(l=>l[0]===locale)-1;
-  const direct=DISPLAY[text];if(direct)return direct[index];
+  const direct=DISPLAY[text]??REDESIGN_DISPLAY[text];if(direct)return direct[index];
   if(text==='Choose a PDF file.')return translateDisplay('PDF file required.',locale);
   if(/^Unsupported|no readable text layer|^This PDF has no readable|^Scans/.test(text))return translateDisplay('Unsupported document. Choose a supported text PDF; scans, drawings and unrelated files are not accepted.',locale);
   const source=/^(Source|Intake source|Statement source|Visa source) (.+)$/.exec(text);

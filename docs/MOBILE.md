@@ -1,3 +1,6 @@
+# Latest phone redesign revision
+Expo Go now opens Home, with Review and Settings tabs. Pair Mac and change appearance/language in Settings. Home country/globe selection is a preference, not country-specific visa support. PDF: Documents -> Review -> AI. Photo: Cover -> Review -> Explain. Optional fields/source/privacy/Proof details remain accessible. No-printer demo files/script: DEMO.md; current design: REDESIGN.md. Older layout/platform instructions below are historical.
+
 # iPhone demo — Expo Go with Ollama on the Mac
 
 Latest user-selected target. **The Mac must stay awake/running and share trusted Wi-Fi/hotspot with the iPhone.** No Xcode, cable, paid build or inference account is needed for this path. Standalone phone-Qwen source is preserved in StandaloneReviewScreen.tsx; its older setup/results are in STANDALONE-MOBILE.md, not the current demo.

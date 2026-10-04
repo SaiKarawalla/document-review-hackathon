@@ -1,5 +1,5 @@
 import {GLOSSARY,PHOTO_LIMITS,visibleLines,termsIn,type Box,type PhotoLine} from '../../src/shared/photo';
-declare global{interface Window{__OCR_WORKER:string;ReactNativeWebView?:{postMessage:(s:string)=>void};photo:{load:(src:string)=>Promise<void>;analyze:()=>Promise<void>}}}
+declare global{interface Window{__OCR_WORKER:string;ReactNativeWebView?:{postMessage:(s:string)=>void};photo:{load:(src:string)=>Promise<void>;analyze:()=>Promise<void>;setTheme:(dark:boolean)=>void}}}
 declare const Tesseract:{createWorker:(lang:string,oem:number,options:Record<string,unknown>)=>Promise<{setParameters:(p:Record<string,unknown>)=>Promise<unknown>;recognize:(image:HTMLCanvasElement,options:object,output:object)=>Promise<{data:{blocks:{paragraphs:{lines:(PhotoLine&{words:{text:string;bbox:Box}[]})[]}[]}[]}}>;terminate:()=>Promise<void>}>};
 const canvas=document.querySelector<HTMLCanvasElement>('#canvas')!,ctx=canvas.getContext('2d')!;
 const page=document.querySelector<HTMLElement>('#page')!,terms=document.querySelector<HTMLElement>('#terms')!;
@@ -72,7 +72,7 @@ async function recognize(){
   finally{working=false;await worker?.terminate();URL.revokeObjectURL(url);}
 }
 analyze.onclick=()=>void recognize();
-window.photo={load,analyze:recognize};
+window.photo={load,analyze:recognize,setTheme:dark=>{document.documentElement.dataset.theme=dark?'dark':'light';}};
 // No networking beyond embedded data/blob resources. CSP also blocks external requests.
 window.fetch=()=>Promise.reject(new Error('Photo network access blocked'));
 emit({type:'ready',glossary:GLOSSARY.length});
