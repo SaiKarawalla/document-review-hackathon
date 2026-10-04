@@ -38,3 +38,7 @@ These are app defaults, not claims about everyone’s language or a country’s 
 Root checks: 146 tests passed, TypeScript and production web build passed. Mobile TypeScript and lint passed during implementation; final native redesign result5 passed48.857s/0failures; redesigned actual photo/real-Qwen result3 passed47.085s. Final captures visually checked, including the corrected React Native whitespace warning. Details/failures are recorded in PROGRESS. The focused simulator check covers navigation, ten countries, five language changes, both themes and source-backed PDF/Proof Mode controls. It does not constitute physical iPhone camera/import/LAN verification. A full human rehearsal remains the next separately requested task. No cloud or paid services enabled.
 
 Open `exp://10.171.164.143:8082` in Expo Go on the same trusted Wi-Fi as the running Mac. Connect the private Mac QR **inside the app** via Settings. Do not open `/paired` in Safari. Mac still runs Ollama/Qwen; no phone-local inference claim.
+
+### Globe repair verification
+
+Replaced manual horizon polygon closures with D3 spherical clipping/correct winding. Combined land/graticule paths; stable PanResponder, parent scroll lock, frame-coalesced updates and bounded inertia. Simulator diagonal/reverse drag test passed15.100s; position/country unchanged while dragging, list selection still works. Actual screenshots inspected. Physical device FPS not measured.

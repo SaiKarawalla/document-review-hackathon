@@ -1,3 +1,7 @@
+## Opening repair — latest instructions
+
+Companion startup now generates `artifacts/iphone-open.html` (Step1, scan with iPhone Camera to open Expo Go) and `artifacts/mobile-pairing.html` (Step2, scan only inside app Settings → Pair Mac for local AI → Scan Mac pairing QR). Safari GET of the companion address now shows an Open in Expo Go button, never a key. Refresh Safari if an old rejection is cached. Restarting companion revokes prior pairings: use its new private QR. Same Wi-Fi, Mac awake, Expo port8082. This is local development, not a cloud deployment.
+
 # Latest phone redesign revision
 Expo Go now opens Home, with Review and Settings tabs. Pair Mac and change appearance/language in Settings. Home country/globe selection is a preference, not country-specific visa support. PDF: Documents -> Review -> AI. Photo: Cover -> Review -> Explain. Optional fields/source/privacy/Proof details remain accessible. No-printer demo files/script: DEMO.md; current design: REDESIGN.md. Older layout/platform instructions below are historical.
 

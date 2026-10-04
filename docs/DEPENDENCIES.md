@@ -85,3 +85,7 @@ Installed expo-image-picker57.0.20 (MIT, SDK57 expo install; included in Expo Go
 
 ## Phase 7 redesign additions
 Expo installed SDK57-compatible react-native-svg15.15.4 (MIT), included in Expo Go; icons/globe require no paid API. Bundled Natural Earth1:110m land exterior rings, public domain; source and bundled SHA256 in mobile/assets/land-NOTICE.txt. 75,704byte rounded-coordinate JSON; no runtime map fetch. Offline photo HTML regenerated8,534,635bytes with theme CSS, same English-data SHA and privacy restrictions. Existing29mobile audit advisories (10moderate/19high) remain; no forced dependency upgrades. Optional reportlab creates the synthetic screenshot-demo PDF; it is visually rendered/checked and not an accepted text-PDF adapter.
+
+### Globe repair dependency
+
+`d3-geo`3.1.1 (ISC), `d3-array`/`internmap` transitive ISC; `@types/d3-geo`/GeoJSON types MIT. Mobile runtime plus root dev-only geometry verification dependency. Correct spherical winding and horizon clipping using bundled Natural Earth data. No network tiles or paid service. Reference: https://d3js.org/d3-geo/projection and https://reactnative.dev/docs/panresponder . Root install audit0; mobile unchanged29advisories.

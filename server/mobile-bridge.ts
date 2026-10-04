@@ -23,6 +23,16 @@ export function createMobileBridge(key: Buffer, host: string, transport: typeof 
   return createServer(async (req, res) => {
     const plain = (status: number) => {res.writeHead(status, {'Content-Type':'application/json', 'Cache-Control':'no-store'});res.end('{"error":"Pairing request rejected."}');};
     try {
+      // Camera/Safari can open the companion address by mistake. This page is
+      // public setup guidance only: never expose the pairing key or API data.
+      if (req.method === 'GET' && ['/','/paired'].includes(req.url ?? '') && req.headers.host === host && !req.headers.origin) {
+        const address=host.split(':')[0];
+        if (!/^[0-9.]+$/.test(address)) {plain(403);return;}
+        const expoURL=`exp://${address}:8082`;
+        res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"});
+        res.end(`<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Open Document Review</title><style>body{font:18px system-ui;background:#faf9f6;color:#202827;margin:0;padding:48px 24px}main{max-width:520px;margin:auto}h1{font-size:32px}p,li{line-height:1.5}a{display:block;background:#202827;color:white;text-align:center;padding:18px;border-radius:14px;text-decoration:none;font-weight:700}code{overflow-wrap:anywhere}li{margin:14px 0}</style><main><h1>Open your app</h1><p>This is the Mac connection address. Your documents are reviewed inside Expo Go.</p><a href="${expoURL}">Open in Expo Go</a><p>If the button does not open the app, scan the <strong>Step 1 — Open app</strong> QR displayed on your Mac using the iPhone Camera.</p><ol><li>Open Expo Go on this phone. Keep it on the same Wi-Fi as your awake Mac.</li><li>Inside Document Review, open <strong>Settings → Pair Mac for local AI → Scan Mac pairing QR</strong>.</li><li>Scan the separate <strong>Step 2 — Private pairing</strong> QR using that scanner inside the app.</li></ol><p>App address: <code>${expoURL}</code></p><p>No pairing secret or document information is shown on this page.</p></main></html>`);
+        return;
+      }
       if (req.method !== 'POST' || req.url !== '/paired' || req.headers.host !== host || req.headers.origin
         || req.headers['content-type'] !== 'application/json' || Date.now() >= expiresAt) {plain(403);return;}
       if (Date.now()-windowStart > 60_000) {count=0;windowStart=Date.now();}

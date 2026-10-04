@@ -18,9 +18,20 @@ async function setup(expiresAt=Date.now()+60_000){
   });}
   const message=(command:unknown,overrides={})=>({version:1,requestId:randomUUID(),createdAt:Date.now(),command,...overrides});
   const envelope=(value:unknown,k=key)=>({version:1,data:sealMobile(value,k)});
-  return {key,transport,post,message,envelope};
+  function get(path='/paired',headers:Record<string,string>={}){return new Promise<{status:number;body:string;headers:Record<string,unknown>}>((resolve,reject)=>{
+    const req=request({host:'127.0.0.1',port,path,method:'GET',headers:{Host:'127.0.0.1:test',...headers}},res=>{let data='';res.on('data',c=>data+=c);res.on('end',()=>resolve({status:res.statusCode!,body:data,headers:res.headers}));});req.on('error',reject);req.end();
+  });}
+  return {key,transport,post,get,message,envelope};
 }
 describe('paired mobile boundary',()=>{
+  it('guides mistaken Safari visitors into Expo Go without exposing pairing or forwarding data',async()=>{
+    const s=await setup(Date.now()-1);
+    for(const path of ['/paired','/']){const r=await s.get(path);expect(r.status).toBe(200);expect(r.headers['content-type']).toContain('text/html');expect(r.headers['cache-control']).toBe('no-store');expect(r.body).toContain('href="exp://127.0.0.1:8082"');expect(r.body).toContain('Settings → Pair Mac');expect(r.body).not.toContain(s.key.toString('hex'));}
+    expect((await s.get('/paired',{Host:'evil.invalid'})).status).toBe(403);
+    expect((await s.get('/paired',{Origin:'http://evil.invalid'})).status).toBe(403);
+    expect((await s.get('/other')).status).toBe(403);
+    expect(s.transport).not.toHaveBeenCalled();
+  });
   it('roundtrips AES-GCM and rejects ciphertext changes/wrong keys',()=>{
     const key=randomBytes(32),data=sealMobile({action:'health'},key);
     expect(openMobile(data,key)).toEqual({action:'health'});expect(()=>openMobile(data,randomBytes(32))).toThrow();

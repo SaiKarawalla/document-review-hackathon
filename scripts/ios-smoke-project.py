@@ -36,6 +36,32 @@ final class MobileSmoke: XCTestCase {
         app.activate();closeExpoTools()
         XCTAssertFalse(app.buttons["Pair a different Mac"].exists,"Background must clear pairing")
     }
+    func testGlobeDragAndSelection() throws {
+        continueAfterFailure = false
+        app.activate();closeExpoTools()
+        XCTAssertTrue(app.buttons["Settings tab"].waitForExistence(timeout:25))
+        app.buttons["Settings tab"].tap();reach("locale-en").tap();reach("theme-light").tap()
+        app.buttons["Home tab"].tap();reach("country-picker").tap()
+        reach("country-US").tap()
+        let globe=app.otherElements["country-globe"].firstMatch
+        XCTAssertTrue(globe.waitForExistence(timeout:10))
+        let initial=String(describing:globe.value), y=globe.frame.minY
+        shot("globe-before-drag")
+        globe.coordinate(withNormalizedOffset:CGVector(dx:0.3,dy:0.5)).press(forDuration:0.05,thenDragTo:globe.coordinate(withNormalizedOffset:CGVector(dx:0.7,dy:0.65)))
+        Thread.sleep(forTimeInterval:1)
+        XCTAssertNotEqual(initial,String(describing:globe.value),"Real native drag must rotate the globe")
+        XCTAssertEqual(globe.frame.minY,y,accuracy:3,"Globe drag must not scroll its parent page")
+        XCTAssertTrue(app.buttons["country-US"].isSelected,"Dragging must not accidentally select markers")
+        shot("globe-after-diagonal-drag")
+        let rotated=String(describing:globe.value)
+        globe.coordinate(withNormalizedOffset:CGVector(dx:0.7,dy:0.55)).press(forDuration:0.05,thenDragTo:globe.coordinate(withNormalizedOffset:CGVector(dx:0.3,dy:0.3)))
+        Thread.sleep(forTimeInterval:1)
+        XCTAssertNotEqual(rotated,String(describing:globe.value),"Reverse drag must work without resetting the responder")
+        shot("globe-after-reverse-drag")
+        reach("country-IN").tap();XCTAssertTrue(app.buttons["country-IN"].isSelected)
+        reach("country-US").tap();reach("Done").tap()
+        XCTAssertTrue(app.buttons["Home tab"].exists)
+    }
     func testRedesignNavigationThemesCountriesAndPDF() throws {
         continueAfterFailure = false
         freshSession()
