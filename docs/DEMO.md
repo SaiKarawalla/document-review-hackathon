@@ -65,3 +65,15 @@ Phase 5 automated rehearsal reran the full production browser flow with actual l
 # Native iPhone transition
 
 Use [MOBILE.md](MOBILE.md) for Expo Go and private Mac pairing. The two core demonstrations remain supported-document comparison and the exact minimized AI request. Real PDFs parse on the phone; inference runs on the paired Mac. Explain that boundary explicitly to judges. The script below originally rehearsed the preserved desktop baseline; native verification is separately recorded in PROGRESS. Visa/Proof Mode is still Phase 6. No paid service is enabled.
+
+## Phase 6 phone demo
+
+Use ExpoGo on iPhone with awake Mac/same Wi-Fi; follow MOBILE.md. Two distinct QRs: public app-opening Metro QR, then private one-hour companion pairing QR. No paid services/keys. Five-language toggle changes UI and labeled translated display, not original documents/model request.
+
+1. Address conflict still demonstrates the original intake/statement core; print these clearly synthetic PDFs if helpful. Never edit original PDF to simulate a correction.
+2. Visa name conflict demonstrates selected real typed four-page DE/EN layout plus the different bank-statement structure. Open name source on visa and statement; comparison is deterministic, with no claim which value is right.
+3. Visa only shows a genuinely parsed missing passport number with source page; cross-document findings do not appear without the statement. This is eight selected records/sample checks, not a full official visa checklist or OCR.
+4. Visa + statement → Prove Financial Resources → expand decisions:15 supported records,7 selected locally,8 excluded,5 derived findings prepared,0 literal values in AI context. Check/confirm selected evidence. Fictional USD3,000/recent-statement rule stays local; passport/DOB/address are unrelated and excluded. Passing does not imply visa eligibility.
+5. Pair Mac, preview exact body/hash, explicitly approve, send. Real Qwen explains statuses only; observed direct Phase6 latencies5.85s and4.19s, not a future guarantee. Switch language to Hindi/Chinese/Spanish/French; translated display retains canonical real model response, never raw-document translation or new AI call. Correction/purpose change clears result/approval; reset/background clears case.
+
+Questions: “Can AI see my passport/account?” It receives fixed derived statuses, not the number or the source page. “Does this work with any visa/drawing?” No: precise typed layout/sample adapters; unrelated/scanned files rejected locally. “Is this legally sufficient?” No: synthetic policy and consistency checks, human decision. “Can Mac be shut?” Not for this selected ExpoGo/Ollama demo; standalone source exists but physical install is deferred. “Where does data go?” Only minimized encrypted facts to paired local Mac; no cloud or paid services.

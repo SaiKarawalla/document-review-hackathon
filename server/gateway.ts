@@ -19,13 +19,13 @@ export class ModelGateway {
     if (this.pending.size >= 16) throw new GatewayError(429, 'Too many pending previews. Discard one or wait for expiry.');
     const body = {
       model: this.model, system: SYSTEM,
-      prompt: JSON.stringify({ instruction: 'Explain each finding in context order. Include all six unique IDs exactly once. Choose only sentences allowed for that ID. The response schema enforces authoritative statuses.',
+      prompt: JSON.stringify({ instruction: `Explain each finding in context order. Include all ${context.findings.length} unique IDs exactly once. Choose only sentences allowed for that ID. The response schema enforces authoritative statuses.`,
         context, choices: context.findings.map(f => ({ id: f.id, explanation: EXPLANATIONS[f.status], follow_up: FOLLOW_UPS[f.status] })) }),
       format: {
         type: 'object', additionalProperties: false, required: ['overview', 'findings'],
         properties: {
           overview: { type: 'string', enum: [context.findings.every(f => f.status === 'consistent') ? OVERVIEWS[1] : OVERVIEWS[0]] },
-          findings: { type: 'array', minItems: 6, maxItems: 6, items: { anyOf: context.findings.map(f => ({
+          findings: { type: 'array', minItems: context.findings.length, maxItems: context.findings.length, items: { anyOf: context.findings.map(f => ({
             type: 'object', additionalProperties: false, required: ['id','explanation','follow_up'],
             properties: { id: { type: 'string', enum: [f.id] },
               explanation: { type: 'string', enum: EXPLANATIONS[f.status] }, follow_up: { type: 'string', enum: FOLLOW_UPS[f.status] } },

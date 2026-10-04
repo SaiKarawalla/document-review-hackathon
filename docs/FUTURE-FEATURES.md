@@ -1,3 +1,7 @@
+Current Phase6 status: selected visa adapter, Proof Mode and five presentation languages are implemented/tested in ExpoGo simulator with real Mac Ollama. The proposal/history below is preserved; its “not implemented” statements describe older checkpoints. Phase7 revamp/optional verified-free Featherless remain unstarted.
+
+Latest user steering, 2026-10-03: Phase 6 is now in progress for iPhone / Expo Go with local Ollama Qwen on the paired Mac. Mac must stay running, same trusted Wi-Fi. Add FIVE presentation languages in Phase 6: English, Spanish, Hindi, Simplified Chinese, French. Supersedes Mac-only / standalone-phone-only / ten-language Phase 7 plans. Preserve standalone code; no paid services, no automatic Phase 7. Visa review and Proof Mode stay in Phase 6. Language display is separate from supported PDF adapters; translated canonical AI text is labeled.
+
 Latest hackathon additions requested 2026-10-03: Mac demo, ten locale presentation toggle with four-priority languages, verified-free Featherless event runtime and explicit drawing/unsupported input handling. These are saved as separate Phase 7 hackathon work after Phase 6 visa / Proof Mode, not assumed post-event funding. Read LANGUAGES-AND-SPONSOR-PLAN.md and PLAN.md for acceptance. Planning only; no language/provider implementation started.
 
 # Future feature brief — FormBridge

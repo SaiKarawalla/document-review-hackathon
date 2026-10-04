@@ -92,6 +92,53 @@ final class MobileSmoke: XCTestCase {
         app.buttons["Reset"].tap()
         XCTAssertFalse(app.staticTexts["AI explanation • Ollama on Mac"].exists)
     }
+    func testPhase6VisaProofAndFiveLanguages() throws {
+        continueAfterFailure=false
+        freshSession()
+        reach("locale-en").tap()
+        app.buttons["Reset"].tap()
+        reach("Visa name conflict").tap();reach("Load demo pair").tap()
+        XCTAssertTrue(app.staticTexts["Jordan Example"].firstMatch.waitForExistence(timeout:25))
+        XCTAssertTrue(app.buttons["3 consistent checks • show"].exists)
+        reach("Source Name visa").tap()
+        XCTAssertTrue(app.staticTexts["Original PDF • page 1"].waitForExistence(timeout:10))
+        shot("phase6-visa-source")
+        reach("Close source").tap()
+        for code in ["es","hi","zh-Hans","fr","en"] {
+            reach("locale-" + code).tap();shot("phase6-language-" + code)
+        }
+        app.buttons["Reset"].tap();reach("Visa only").tap();reach("Load demo pair").tap()
+        XCTAssertTrue(app.staticTexts["Avery Example"].firstMatch.waitForExistence(timeout:25))
+        XCTAssertTrue(app.buttons["1 consistent checks • show"].exists)
+        shot("phase6-single-visa-missing")
+        app.buttons["Reset"].tap();reach("Visa + statement").tap();reach("Load demo pair").tap()
+        XCTAssertTrue(app.staticTexts["Avery Example"].firstMatch.waitForExistence(timeout:25))
+        reach("Prove Financial Resources").tap()
+        XCTAssertTrue(app.staticTexts["15 source fields • 7 selected locally • 8 excluded • 5 derived findings prepared • 0 literal values in AI context"].exists)
+        reach("Inspect included and excluded fields").tap();shot("phase6-proof-evidence")
+        reach("Confirm selected evidence").tap()
+        XCTAssertTrue(app.buttons["5 consistent checks • show"].exists)
+        reach("Pair Mac for local AI").tap()
+        let code=app.textViews["Private pairing code"]
+        UIPasteboard.general.string=PAIRING_LITERAL
+        code.tap();code.press(forDuration:1.2);app.menuItems["Paste"].tap()
+        if app.alerts.buttons["Allow Paste"].exists {app.alerts.buttons["Allow Paste"].tap()}
+        reach("Connect Mac").tap()
+        XCTAssertTrue(app.staticTexts["qwen2.5:1.5b • ready on Mac"].waitForExistence(timeout:15))
+        reach("Preview exact AI request").tap();reach("View full exact request").tap()
+        let body=app.staticTexts.matching(NSPredicate(format:"label BEGINSWITH %@", "{\"model\"" )).firstMatch
+        XCTAssertTrue(body.waitForExistence(timeout:5))
+        XCTAssertTrue(body.label.contains("financial-resources"))
+        for excluded in ["Avery Example","DEMO-PASSPORT","DEMO-ACCT","4200.00","2026-09-30"] {XCTAssertFalse(body.label.contains(excluded))}
+        shot("phase6-proof-exact-request");reach("Close request").tap()
+        app.otherElements["Approve minimized request to paired Mac"].firstMatch.tap();reach("Send approved request").tap()
+        XCTAssertTrue(app.staticTexts["AI explanation • Ollama on Mac"].waitForExistence(timeout:70));shot("phase6-real-phone-ollama")
+        reach("locale-es").tap();reach("locale-en").tap()
+        // Display-only language changes retain the real response and do not call the model again.
+        reach("5 consistent checks • show").tap()
+        XCTAssertTrue(app.staticTexts["AI explanation • Ollama on Mac"].exists)
+        app.buttons["Reset"].tap()
+    }
     func testOtherRealPdfCasesAndBackgroundClear() throws {
         continueAfterFailure=false
         freshSession()

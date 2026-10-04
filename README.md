@@ -2,11 +2,11 @@
 
 A local hackathon prototype for finding missing or conflicting information across supported PDFs and showing exactly what minimized information the AI receives. Intended audience: teams handling visa/immigration paperwork.
 
-**Hackathon demo: the Mac web app with local Ollama/Qwen.** Open <http://127.0.0.1:8787>. The user chose this target to avoid phone-installation delays. The standalone iPhone implementation is preserved in `mobile/`: Release build and native simulator test passed with a real on-device Qwen response (14.2 s), while Mac AI/dev services were stopped. Physical phone installation is deferred, not verified; see [MOBILE](docs/MOBILE.md).
+**Hackathon demo: iPhone in Expo Go, with free local Qwen/Ollama on the paired Mac.** The Mac must stay running/awake on the same trusted Wi-Fi. Open the app-opening QR on this Mac (`artifacts/iphone-open.html`), then pair inside the app using the separate private companion QR. See [phone setup](docs/MOBILE.md).
 
-**Planned additions:** selected Schengen workflow/Proof Mode (Phase 6), then ten presentation languages and optional verified-free event Featherless (Phase 7). No language toggle or Featherless integration works yet. [Detailed language/provider/rejection plan](docs/LANGUAGES-AND-SPONSOR-PLAN.md).
+**Phase 6 implemented:** selected typed German/English four-page Schengen application review, single-document missing/date checks, name comparison with the synthetic bank statement, and purpose-specific Proof Mode with measured inclusion/exclusion decisions. **Five presentation languages:** English, Spanish, Hindi, Simplified Chinese and French. Qwen’s real validated canonical response is displayed with labeled local translations; original evidence and exact request bytes stay unchanged. Supported document formats are separate from UI language.
 
-**Preserved baseline:** fictional client intake + bank statement, real browser-local PDF parsing, source evidence, editable fields, deterministic comparison and real local Ollama explanations. **Visa-form support and purpose-driven Proof Mode are planned for Phase 6 and are not implemented yet.** This is consistency review, not document authentication or an eligibility decision.
+Original intake/statement comparison remains available on phone and the preserved [Mac web baseline](http://127.0.0.1:8787). This is consistency review under sample rules, not authenticity or visa eligibility. Standalone phone-Qwen source/results are preserved separately; physical installation is deferred. **Phase 7 visual revamp and optional verified-free Featherless are not started. No paid service is enabled.**
 
 Public repository: [SaiKarawalla/document-review-hackathon](https://github.com/SaiKarawalla/document-review-hackathon). No public deployment or paid service is required.
 
@@ -91,10 +91,10 @@ Open <http://127.0.0.1:5173>; this command starts the preserved Vite interface a
 
 Select **Address conflict**, click **Load demo pair**, inspect the source, then **Preview exact AI request**, approve and send. Follow the [90-second script and judge Q&A](docs/DEMO.md).
 
-- Only `client-intake-v1` and `bank-statement-v1`, identified from PDF content/structure, are supported. Use the examples in `public/fixtures/`; renaming an arbitrary PDF does not make it supported.
+- Phone supports `client-intake-v1`, `bank-statement-v1`, and the selected typed DE/EN Schengen layout, identified from content/structure/position anchors. Web comparison keeps the original intake/statement baseline. Use the examples in `public/fixtures/`; renaming an arbitrary PDF does not make it supported.
 - Maximum two PDFs per case, 5 MiB per file, 10 pages per file, 100,000 extracted characters, 15-second parsing timeout. Cancel/reset terminates parser work.
 - Text-layer PDFs only. Scans/photos, encrypted/malformed PDFs, unsupported structures and editions are rejected. There is no OCR.
-- Findings require the supported pair. Single-document visa checks, the selected Schengen adapter, Proof Mode and inclusion/exclusion reasons are Phase 6 work.
+- Phone visa checks work with one document; name comparison needs a supporting statement. Proof Mode requires confirmed relevant evidence and a fictional sample policy. No full official visa checklist or generic OCR.
 - Human source evidence shows the original PDF, including its private values. Model input excludes raw documents/text, names, literal addresses, amounts, dates, account/passport IDs, filenames, notes and excerpts. It contains validated template identifiers, field enums and derived findings.
 - Corrections change comparison values, preserve the original source and invalidate summaries/approvals. Reset clears app-held references and results; this is not forensic erasure of the browser/OS.
 - AI selects tightly constrained sentences tied to authoritative findings. Invalid output is rejected; AI does not decide whether literal values match. It has no tools or document-submission capability.
@@ -135,8 +135,9 @@ CI is prepared in `.github/workflows/checks.yml` but **not enabled or tested on 
 | macOS setup/demo/license handoff | Written; lockfile reinstall, build/checks and local production launch verified on this Mac |
 | Standalone iPhone interface, local PDF engine and on-device Qwen | Release build/native simulator flow passed with real14.2 s Qwen; physical installation deferred by user |
 | Hosted CI | Prepared, gated off; billing allowance inaccessible and Linux run unverified |
-| Schengen application adapter, single-visa checks, purpose-driven Proof Mode | Planned Phase 6; not implemented |
-| Ten presentation languages / optional Featherless | Planned Phase 7; not implemented or tested |
+| Selected Schengen layout, single-visa checks, Proof Mode | Implemented; actual PDF fixtures, purpose/privacy tests and Expo Go simulator flow passed |
+| Five presentation languages | Implemented and simulator-captured; native-speaker translation review unverified |
+| Optional Featherless / visual revamp | Phase 7; not started, no paid activation |
 | OCR, arbitrary PDFs, cloud hosting, accounts/storage/integrations | Not implemented |
 
 ## Troubleshooting
@@ -152,4 +153,4 @@ CI is prepared in `.github/workflows/checks.yml` but **not enabled or tested on 
 | Expired preview | Create a new preview and approve it; expiry is five minutes, and approvals are single-use. |
 | Fresh install test errors | Verify Node 26.5.0, run lockfile-based `npm ci`, then `npm run check`. Other runtime versions are not verified here. |
 
-Dependency/model versions, licenses and upstream links: [DEPENDENCIES](docs/DEPENDENCIES.md). Phase records: [PLAN](docs/PLAN.md), [PROGRESS](docs/PROGRESS.md). Screenshot originals, official blank visa reference and future feature brief are preserved in ignored local `references/` folders; they are not required for the baseline demo. Phase 6 needs that reference/provenance or the documented official source download.
+Dependency/model versions, licenses and upstream links: [DEPENDENCIES](docs/DEPENDENCIES.md). Phase records: [PLAN](docs/PLAN.md), [PROGRESS](docs/PROGRESS.md). Screenshot originals, official blank visa reference and future feature brief are preserved in ignored local `references/` folders; they are not required for the baseline demo. Committed fictional filled examples run without the blank reference; regenerating visa fixtures requires the preserved reference/provenance or documented official download.

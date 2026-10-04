@@ -1,6 +1,6 @@
-export const FIELD_NAMES = ['name', 'address', 'applicant_id', 'account', 'balance', 'currency', 'as_of', 'period_start', 'period_end'] as const;
+export const FIELD_NAMES = ['name', 'address', 'applicant_id', 'account', 'balance', 'currency', 'as_of', 'period_start', 'period_end', 'birth_date', 'passport', 'passport_issued', 'passport_expires', 'arrival', 'departure', 'destination'] as const;
 export type FieldName = typeof FIELD_NAMES[number];
-export type Template = 'client-intake-v1' | 'bank-statement-v1';
+export type Template = 'client-intake-v1' | 'bank-statement-v1' | 'schengen-de-demo-v1';
 export type ExtractionStatus = 'extracted' | 'absent' | 'needs_review';
 export interface Field {
   documentId: string; template: Template; field: FieldName;
@@ -16,10 +16,12 @@ export const LIMITS = { bytes: 5 * 1024 * 1024, pages: 10, text: 100_000, timeou
 export const LABELS: Record<FieldName, string> = {
   name: 'Name', address: 'Mailing address', applicant_id: 'Applicant ID', account: 'Account number',
   balance: 'Balance', currency: 'Currency', as_of: 'Balance as of', period_start: 'Period start', period_end: 'Period end',
+  birth_date: 'Birth date', passport: 'Travel document number', passport_issued: 'Travel document issued', passport_expires: 'Travel document expires', arrival: 'Arrival date', departure: 'Departure date', destination: 'Destination',
 };
 export const TEMPLATE_FIELDS: Record<Template, Partial<Record<FieldName, string>>> = {
   'client-intake-v1': { name: 'Applicant name', address: 'Mailing address', applicant_id: 'Applicant ID', account: 'Supporting account', balance: 'Declared balance', currency: 'Declared currency', as_of: 'Balance as of' },
   'bank-statement-v1': { name: 'Account holder', address: 'Statement mailing address', account: 'Account number', balance: 'Closing balance', currency: 'Account currency', period_start: 'Period start', period_end: 'Period end' },
+  'schengen-de-demo-v1': {}, // Coordinate adapter in visa.ts; never accepted by marker-only parsing.
 };
 export function normalize(value: string): string {
   return value.normalize('NFC').trim().replace(/\s+/g, ' ').toLocaleLowerCase('en-US');
@@ -32,7 +34,7 @@ export function validISODate(value: string): boolean {
 export function fieldStatus(field: FieldName, value: string): ExtractionStatus {
   if (!value.trim()) return 'absent';
   if (value.length > 300 || /[\u0000-\u001f]/.test(value)) return 'needs_review';
-  if (['as_of', 'period_start', 'period_end'].includes(field) && !validISODate(value.trim())) return 'needs_review';
+  if (['as_of', 'period_start', 'period_end', 'birth_date', 'passport_issued', 'passport_expires', 'arrival', 'departure'].includes(field) && !validISODate(value.trim())) return 'needs_review';
   if (field === 'balance' && !/^\d+(\.\d{1,2})?$/.test(value.trim())) return 'needs_review';
   if (field === 'currency' && !/^[A-Z]{3}$/.test(value.trim())) return 'needs_review';
   return 'extracted';
@@ -43,7 +45,7 @@ export function parseLines(lines: SourceLine[], id: string, filename: string, pa
   const markers = lines.filter(l => /^Template:/.test(l.text));
   if (markers.length !== 1) throw new Error('Unsupported document: expected one unambiguous template/version marker.');
   const template = markers[0].text.slice('Template:'.length).trim() as Template;
-  if (!Object.hasOwn(TEMPLATE_FIELDS, template)) throw new Error('Unsupported template or version. Use client-intake-v1 or bank-statement-v1.');
+  if (!Object.hasOwn(TEMPLATE_FIELDS, template) || template === 'schengen-de-demo-v1') throw new Error('Unsupported template or version. Use client-intake-v1, bank-statement-v1 or the supported Schengen demo layout.');
   const structure = template === 'client-intake-v1' ? ['CLIENT INTAKE', 'APPLICANT DETAILS', 'FINANCIAL DECLARATION'] : ['BANK STATEMENT', 'ACCOUNT PROFILE', 'PERIOD SUMMARY'];
   if (!structure.every(s => lines.some(l => l.text === s))) throw new Error('Unsupported structure: template sections are missing. A marker alone is insufficient.');
   const fields: ReviewDocument['fields'] = {};
@@ -65,7 +67,7 @@ export function correctField(doc: ReviewDocument, name: FieldName, value: string
 }
 export const STATUSES = ['consistent', 'conflicting', 'absent', 'needs_review', 'not_comparable'] as const;
 export type FindingStatus = typeof STATUSES[number];
-export const FINDING_IDS = ['name', 'address', 'account', 'balance', 'intake_fields', 'statement_fields'] as const;
+export const FINDING_IDS = ['name', 'address', 'account', 'balance', 'intake_fields', 'statement_fields', 'visa_fields', 'visa_dates', 'proof_resources'] as const;
 export type FindingId = typeof FINDING_IDS[number];
 export interface Finding {
   id: FindingId; label: string; status: FindingStatus; explanation: string; evidence: Field[];

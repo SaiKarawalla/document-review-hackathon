@@ -9,5 +9,9 @@ const fixtures:Record<string,{filename:string;base64:string}[]>={};
 for(const scenario of ['address-conflict','matching','missing-field','malicious-text']) {
   fixtures[scenario]=await Promise.all(['intake','statement'].map(async kind=>({filename:`${scenario}-${kind}.pdf`,base64:(await readFile(`public/fixtures/${scenario}-${kind}.pdf`)).toString('base64')})));
 }
+for(const [scenario,visa] of [['visa-matching','matching'],['visa-name-conflict','name-conflict'],['visa-missing','missing'],['visa-only','missing']]){
+  const names=[`visa-${visa}.pdf`,...(scenario==='visa-only'?[]:['matching-statement.pdf'])];
+  fixtures[scenario]=await Promise.all(names.map(async filename=>({filename,base64:(await readFile(`public/fixtures/${filename}`)).toString('base64')})));
+}
 await writeFile('mobile/generated/fixtures.ts',`// Actual committed synthetic PDFs, bundled for phone-local parsing.\nexport const FIXTURES:Record<string,{filename:string;base64:string}[]>=${JSON.stringify(fixtures)};\n`);
 console.log('Built self-contained phone-local PDF engine and real synthetic fixtures.');
