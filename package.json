@@ -12,7 +12,8 @@
     "fixtures": "tsx scripts/fixtures.ts",
     "check": "npm run typecheck && npm test && npm run build",
     "mobile:assets": "tsx scripts/build-mobile-assets.ts",
-    "mobile:companion": "tsx scripts/mobile-companion.ts"
+    "mobile:companion": "tsx scripts/mobile-companion.ts",
+    "mobile:model": "node scripts/download-phone-model.mjs"
   },
   "engines": {
     "node": ">=22.13"

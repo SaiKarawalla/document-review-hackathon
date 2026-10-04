@@ -13,3 +13,4 @@ artifacts/
 .DS_Store
 .venv/
 mobile/generated/
+mobile/models/

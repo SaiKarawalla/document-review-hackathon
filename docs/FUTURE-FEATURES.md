@@ -1,3 +1,5 @@
+Latest hackathon additions requested 2026-10-03: Mac demo, ten locale presentation toggle with four-priority languages, verified-free Featherless event runtime and explicit drawing/unsupported input handling. These are saved as separate Phase 7 hackathon work after Phase 6 visa / Proof Mode, not assumed post-event funding. Read LANGUAGES-AND-SPONSOR-PLAN.md and PLAN.md for acceptance. Planning only; no language/provider implementation started.
+
 # Future feature brief — FormBridge
 
 Requested 2026-10-03 for a later phase, not Phase 4; now explicitly planned as **Phase 6** in docs/PLAN.md. Source: `/Users/skarawalla/Downloads/FormBridge_Unique_Feature.pdf`, two pages. Read extracted text and visually inspected both rendered pages. Original preserved unchanged at ignored `references/future-features/FormBridge_Unique_Feature.pdf`; provenance and SHA-256 recorded alongside it. The name FormBridge is in the brief; current temporary UI name remains Document Review until a later branding decision.

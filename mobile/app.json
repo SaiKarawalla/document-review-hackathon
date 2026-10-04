@@ -7,11 +7,22 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "scheme": "document-review",
-    "plugins": ["expo-router", ["expo-camera", {"cameraPermission":"Scan the private pairing QR from your Mac.","microphonePermission":false,"recordAudioAndroid":false}]],
+    "plugins": [
+      "expo-router",
+      [
+        "llama.rn",
+        {
+          "enableEntitlements": false,
+          "enableOpenCLAndHexagon": false
+        }
+      ],
+      "expo-build-properties",
+      "./plugins/withPhoneModel"
+    ],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.documentreview.hackathon",
-      "infoPlist": {"NSLocalNetworkUsageDescription":"Connect to your paired Mac to explain minimized review facts.","NSCameraUsageDescription":"Scan your Mac's private pairing QR."}
+      "infoPlist": {}
     },
     "android": {
       "adaptiveIcon": {

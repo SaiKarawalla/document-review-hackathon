@@ -1,3 +1,5 @@
+Latest request, 2026-10-03: user wants to take advantage of event Featherless and plans multilingual presentation, now using Mac for demo. Re-inspected participant-perks screenshot visually: one month free inference through emailed access instructions. No redemption/account/key/quota is verified yet. Prioritize Featherless over unrelated automation/voice/domain perks; Qwen2.5-7B-Instruct is a candidate from official quickstart, subject to actual plan/model availability. Saved Phase 7 readiness/gateway/free-only acceptance in LANGUAGES-AND-SPONSOR-PLAN.md. Do not start account/paid usage or claim provider enabled on this planning turn.
+
 # Sponsor resources for this hackathon
 
 Source: visually inspected participant-perks screenshot IMG_1241.JPG, preserved unchanged in ignored references/screenshots/participant-perks.jpg. Other screenshots show winner prizes, not ordinary participant entitlements. See SCREENSHOT-NOTES.md. All offers below are slide claims; none has been activated or its account-specific quota verified.

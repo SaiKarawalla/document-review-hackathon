@@ -1,3 +1,7 @@
+Latest hackathon demo target: **Mac web app at http://127.0.0.1:8787 with local Qwen/Ollama**. Follow the original 90-second baseline steps below: actual synthetic PDFs, conflicting address/source, exact minimized request, explicit approval, real validated AI response, correction/reset. Print synthetic intake/statement copies for visual evidence. Native implementation is preserved/simulator-tested; phone installation is deferred by user. Ten presentation languages/Featherless and Phase 6 visa / Proof Mode remain planned, not demo claims. Public repo unchanged URL.
+
+Current native demo target: **standalone Qwen on iPhone, Mac off**. Use MOBILE.md's updated steps. Load PDFs, inspect differences/source, load bundled Qwen, inspect/approve actual in-process request, require validated real AI response. Print synthetic intake/statement copies for visual comparison. Public code is available at the existing GitHub URL. Expo Go and paired Mac are superseded for the final phone demo. The scripts below preserve earlier desktop/paired-Mac rehearsals, not phone-runtime verification.
+
 # Baseline demo and judge Q&A — Phase 5
 
 This rehearses the working intake/statement baseline. Visa-paperwork review is the product goal; the identified Schengen adapter and purpose-driven Proof Mode are planned for Phase 6, not shown as working here. Event sponsor perks are optional hackathon resources, not assumed future funding; see HACKATHON-RESOURCES.md. No paid services are enabled.

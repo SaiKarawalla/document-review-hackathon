@@ -1,3 +1,10 @@
+## On-device phone model correction (2026-10-03)
+
+- llama.rn 0.12.9, MIT, React Native binding of llama.cpp with prebuilt native binaries; [upstream](https://github.com/mybigday/llama.rn). Stable version pinned, downloaded/cached native artifacts checksum-verified by package installer. Native backend includes llama.cpp/ggml and their notices in upstream package.
+- expo-asset 57.0.18 / expo-build-properties 57.0.22, MIT, SDK57-compatible choices installed through Expo. Custom withPhoneModel config plugin links a verified GGUF resource; no manual native-source modifications. No paid/increased-memory entitlements.
+- Official [Qwen2.5-0.5B-Instruct-GGUF](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF), Apache-2.0 according to official model metadata. Q4_K_M file 491,400,032 bytes, revision 9217f5db79a29953eb74d5343926648285ec7e67; SHA-256 74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db verified. Public uncredentialed download; not a paid API. Model/notice files stay local for bundling, excluded from Git. The old Ollama 1.5B model remains desktop-only.
+- Installation and simulator/native execution results are separate: see PROGRESS.29 mobile audit advisories remain; do not claim a clean audit.
+
 # Verified dependencies — 2026-10-03
 
 Versions below come from installed package metadata and the committed lockfile on the actual demo Mac, not assumed latest releases. Licenses were read from package metadata/local license files; upstream links identify the projects. `npm ci` installs the lockfile. Preserve applicable license/copyright notices when distributing dependencies; this is an inventory, not a legal compliance audit or a chosen license for this private application's own code.

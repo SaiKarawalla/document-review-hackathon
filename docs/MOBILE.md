@@ -1,73 +1,64 @@
-# iPhone demo — Expo Go
+Latest user decision, 2026-10-03: **demo on the Mac** and stop phone-installation work. This standalone implementation is preserved and simulator-verified, not the required current hackathon interface. Real native Qwen took 14.2 seconds; full source/preview/approval/exclusion/correction/reset/background test passed with all old Mac services off. Actual iPhone installation was not possible without device/signing/cable and is deferred by the user. The following setup remains for a later optional device install.
 
-The mobile target is a native React Native interface in Expo Go. Supported PDFs are parsed on the phone inside a disposable, network-disabled PDF.js WebView. Comparison and minimization use the same shared rules as the verified web baseline. Ollama runs on the paired Mac, not inside the iPhone. Visa support and Proof Mode remain the separately planned Phase 6.
+# Standalone iPhone app — on-device Qwen
 
-## Start on the existing Mac
+Latest user requirement: the Mac will be off during the hackathon demo. This guide supersedes the previous Expo Go/paired-Mac setup. Work is limited to correcting the mobile checkpoint; visa/Proof Mode Phase 6 has not started. Repository is PUBLIC: https://github.com/SaiKarawalla/document-review-hackathon.
 
-Keep the iPhone and Mac on the same trusted Wi-Fi or hotspot. Install the free Expo Go app on the iPhone. No Apple developer subscription, EAS build or cloud model key is required. The current iOS Expo Go app requires a free Expo login on both Mac CLI and iPhone, using the same account. This Mac is already signed in as **karawalla** (`npx expo whoami` verified); sign into that account in Expo Go on your phone. No login was created or password requested. [Expo's September 2026 login change](https://expo.dev/changelog/expo-go-57-login) exempts simulators, so the simulator passing does not verify your phone login.
+## What runs where
 
-From the repository root, install/generate assets once:
+The installed Release app bundles its JavaScript, real synthetic PDFs, PDF.js engine, native llama.rn runtime and official Qwen2.5-0.5B-Instruct Q4_K_M GGUF. PDF extraction, deterministic comparison, evidence/corrections, exact minimized prompt preview and AI inference run within the iPhone app. No Mac server, Ollama daemon, Wi-Fi, cloud credentials or paid API is required during use. The Mac/Xcode is needed to build and install, not to process documents afterward. Expo Go cannot run this added native library.
+
+The two supported synthetic template editions remain intake-v1 and statement-v1. Visa support/Proof Mode remain Phase 6 work. Do not imply arbitrary PDFs or scans are supported.
+
+## Build on this Mac for free
+
+From the repository root:
 
 ```sh
 npm ci --no-audit --no-fund
-npm --prefix mobile ci --no-audit --no-fund
+cd mobile
+npm ci --no-audit --no-fund
+node node_modules/llama.rn/install/download-native-artifacts.js
+cd ..
 npm run mobile:assets
-```
-
-Keep the existing cloud-disabled Ollama process running; see README for installation/model download. In separate terminals:
-
-```sh
-npm run build
-npm start
-```
-
-```sh
-npm run mobile:companion
-```
-
-```sh
+npm run mobile:model
 cd mobile
-npx expo start --port 8082
+npm run typecheck
+npm run lint
 ```
 
-Scan the **Expo terminal QR** with the iPhone Camera to open Document Review in Expo Go. Allow local-network access when iOS asks. Then open the separate private pairing page on the Mac:
+The first dependency/model download needs internet; model file is 491,400,032 bytes and SHA-256 verified against pinned official metadata. Both model and generated native projects are ignored in Git. The config plugin verifies the model checksum before adding it to native resources; no increased-memory or special paid entitlements are enabled. Model notice/license/source details are in DEPENDENCIES.md.
+
+To install on a physical iPhone, connect it with a cable, unlock/trust the Mac, enable Developer Mode if prompted, and sign into Xcode Settings → Accounts with your own Apple account. Use the free Personal Team; do not enroll in paid membership or enable billing. Never give the assistant your password. Then:
 
 ```sh
-open artifacts/mobile-pairing.html
+npm run ios:standalone
 ```
 
-Inside Document Review, tap **Pair Mac for local AI → Scan Mac pairing QR** and scan that page. The pairing QR contains a temporary secret: keep it private, do not screenshot/share/commit it. Manual JSON paste is available for the simulator. Pairing expires after one hour; stop/restart the companion to revoke/renew it. Backgrounding the app clears the case and pairing; return and pair again.
+Select the connected iPhone. This uses a **Release** build: bundled JavaScript is essential to remove the Metro/dev-server dependency. If Expo reports no signing profile, open the generated ios/DocumentReview.xcworkspace in Xcode, select the app's Signing & Capabilities → your Personal Team, and run with Release configuration. Do not manually commit/edit generated iOS source. Personal Team provisioning expires after 7 days and must be reinstalled; see [Apple's free testing limits](https://developer.apple.com/help/account/basics/about-your-developer-account). A paid App Store/TestFlight account is not being purchased.
 
-Current development address is `exp://10.171.164.143:8082`; this changes with Wi-Fi. The companion binds only the Mac's private address on 8790. The app API (8787) and Ollama (11434) remain loopback-only. Do not expose Ollama or use a public tunnel. If the venue Wi-Fi isolates devices, use a trusted personal hotspot rather than a public deployment.
-
-## Review flow
-
-1. Tap **Load demo pair**. These are actual bundled fictional PDFs, parsed locally; scenario selection does not inject precomputed findings.
-2. Inspect the address conflict, tap **Source** for the actual PDF/excerpt, or **Review** to confirm a value. Corrections recompute findings and clear any prior AI approval/result.
-3. Pair the Mac, tap **Preview exact AI request**, then **View full exact request**. The iPhone verifies the request SHA-256. Names, literal addresses, accounts, amounts, dates, filenames, notes and source excerpts are excluded.
-4. Explicitly approve and send. A successful result is labeled **AI explanation • Ollama on Mac**, with model, latency and matching request receipt. Unavailable/invalid inference is an error; the separate rule-based summary says **no AI response**.
-5. Reset clears app-held case data, results and approval. Cancel aborts outstanding operations. The original PDF remains visible to its human reviewer; the prototype does not visually redact it.
-
-**Choose PDFs from Files** accepts only the two supported text-layer template editions. The picker temporarily copies a file into Expo app cache to read it, then removes the app copy even on validation failure. It does not delete the user's original file. Raw documents and extracted values are then held in app/WebView memory; there is no case database. Reset is not forensic memory/OS erasure.
-
-## Security boundary and development limits
-
-Only strict derived facts enter the companion. Requests/responses use authenticated AES-256-GCM encryption with a random temporary key delivered through the private pairing QR, correlated request IDs and replay/expiry checks. The companion has no upload route, rejects browser origins, limits bodies/rates, and forwards only allowlisted actions to the existing single loopback gateway. Exact preview approval, output validation and the model concurrency limit remain there.
-
-This local development connection is HTTP with encrypted application payloads, **not TLS**. Network metadata is visible; Expo's development bundle delivery uses the trusted LAN. A compromised phone/Mac, malicious development server, someone with the pairing QR, screenshots/backups or OS tooling can defeat this prototype's assumptions. It is not a production security/compliance certification. Use synthetic documents for the hackathon.
-
-No phone-local inference, OCR, arbitrary PDF/visa adapter, accounts, cloud hosting or paid build is implemented. Real-device Camera/Files permissions and venue connectivity require a rehearsal on the user's physical iPhone; simulator results alone cannot prove them.
-
-## Local checks
+For a simulator-only Release build:
 
 ```sh
-npm run check
-npm --prefix mobile run typecheck
-npm --prefix mobile run lint
-cd mobile
-npx expo install --check
+npm run ios:simulator
 ```
 
-Root tests include strict mobile schemas, encrypted transport/interoperability, replay/expiry, origin/host rejection, preview ownership and raw-value exclusion. Native simulator verification is separately recorded in PROGRESS; do not count controlled provider test doubles as actual model inference. Expo dependency audit currently reports unresolved upstream/transitive advisories; see DEPENDENCIES. Hosted CI remains disabled and no paid usage is enabled.
+Native setup: [Expo local Release builds](https://docs.expo.dev/more/expo-cli/#compiling-ios), [llama.rn](https://github.com/mybigday/llama.rn). No EAS build/login/billing service is used.
 
-Optional local XCTest runner: `python3 scripts/ios-smoke-project.py` generates a private ignored runner using the current pairing. It requires installed Xcode, Expo Go and the documented booted simulator; generated reports may contain private pairing data and must not be shared. No Apple signing subscription is needed for this installed-app simulator rehearsal.
+## Demo
+
+1. Open Document Review directly, not Expo Go. Load **Address conflict → Load demo pair**. Show the synthetic paper copies if helpful.
+2. Inspect the conflicting address and original source PDF; optionally confirm a corrected value and see the checks recompute.
+3. Tap **Load Qwen on this iPhone**. This loads the bundled 491 MB model into the local native runtime.
+4. Tap **Preview exact AI request → View full exact request**. The preview contains the model metadata, actual formatted prompt, constrained JSON output schema and completion options. It excludes literal names, addresses, accounts, identifiers, financial values, dates, raw PDFs, notes and excerpts.
+5. Explicitly approve, then **Explain on this iPhone**. Only a validated actual native completion is labeled AI. Invalid/cancelled/timed-out output is rejected. The separate **Show rule-based summary (no AI)** is always labeled accurately.
+6. Reset clears the case/approval/result. Backgrounding also releases the model context; reload Qwen on return. This trades warm-start speed for bounded lifetime of context.
+7. Physical demo acceptance (deferred by latest user choice): disable Wi-Fi/mobile data, close all Mac services or turn Mac off, terminate/reopen the installed app, load the pair/preview/approve and require a real validated Qwen response. This physical test is still pending.
+
+## Privacy and practical limits
+
+Raw documents and extracted fields are never passed to the model, even though both run on one device. The in-process gateway accepts only the strict derived-fact schema, prepares the model-formatted prompt before approval, stores/hash-verifies the exact serialized completion request and consumes approval once. Corrections/reset/provider/model changes require fresh approval. No fetch/network request, cloud fallback, pairing key or server is used by this model path. The native runtime converts the displayed JSON schema into its constrained sampling grammar; model weights/runtime defaults are separately identified, not user document content. This does not mean all native internal tensor/runtime operations are represented as JSON.
+
+Source documents remain visible to the human. Reset/background removes app references and clears/releases the inference context; it is not forensic erasure of iOS memory, Files originals, keyboard/clipboard, OS snapshots or screen recordings. This is a synthetic prototype, not production certification or document authenticity/eligibility advice. Small model has limited freedom: it selects allowed explanations rather than deciding authoritative comparisons. Phone model size/memory/performance still requires physical-device verification.
+
+Current verification: 107 core tests pass (including native gateway test doubles; these are not real model responses), mobile typecheck/lint pass. Standalone Release build and one complete native XCTest passed; actual on-device Qwen response 14.2 seconds. No physical phone connected and no valid signing identity found on this Mac. Prior Expo Go/Mac-Ollama tests are historical evidence for the reused document UI, not evidence of the new phone runtime.29 mobile dependency advisories remain unresolved; no incompatible force downgrade. See PROGRESS for actual native results once available.

@@ -1,3 +1,13 @@
+# Current hackathon runtime
+
+Latest user chooses Mac demo: browser-local PDF extraction/rendering → deterministic comparison → strict minimized context → protected loopback Node gateway → local Ollama/Qwen. Optional event Featherless and ten presentation locales are planned, not implemented; see LANGUAGES-AND-SPONSOR-PLAN.md. Repo PUBLIC, no paid services. The standalone native branch is preserved in the same repository and simulator-tested, but physical phone installation is deferred. Earlier native/paired-Mac sections below record existing implementations/history.
+
+# Current native boundary correction
+
+Standalone iPhone app → phone-local PDF.js WKWebView → shared deterministic comparison → strict derived-fact context → in-process OnDeviceGateway → bundled Qwen through llama.rn. No companion/HTTP/Ollama/cloud path in current native UI. Actual model-formatted prompt, model file fingerprint, JSON output schema and sampling options are prepared before approval; SHA-256 binds stored completion arguments; one-use approval, cancellation and semantic output checks remain mandatory. Native Release binary bundles code/model. Model/plugin/build details: MOBILE.md. Public repository authorized by latest user instruction. Physical install and current native verification status: PROGRESS.md.
+
+The following sections preserve the original desktop and superseded paired-Mac architecture for historical baseline tests; they are not the final phone execution path.
+
 # Local review boundary
 
 Latest target: native iPhone interface in Expo Go (`mobile/`). Real bundled/user-selected PDF bytes are read into phone memory and parsed by PDF.js in a disposable WKWebView with no remote assets/connections. WKWebView's missing ReadableStream async iterator is shimmed inside this engine. Cancelling/remounting disposes the engine; parsing has a 15-second bound. The Files picker app-cache copy is deleted after reading even on validation failure; user originals remain. Shared TypeScript comparison/minimization rules run on the phone. Source pages render to canvas in a second local WebView. No phone-local model inference.

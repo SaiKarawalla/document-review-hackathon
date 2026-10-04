@@ -1,3 +1,5 @@
+Latest user steering (2026-10-03,17:03PDT): use existing Mac demo; stop physical-phone work, preserve completed native Release/simulator results. Repo PUBLIC. Phase 5 done, Phase 6 visa / Proof Mode remains next on instruction, new Phase 7 plans presentation languages/verified-free Featherless. Current request records planning and restores Mac runtime only.
+
 # Current phase plan — 2026-10-03
 
 This file supplements the original master prompt with the user's latest instructions. Continue the existing repository; do not restart. Execute **one phase per user instruction** and stop at its checkpoint. The user separately authorized Phase 5 on 2026-10-03; it is now complete. Phase 6 requires a new instruction.
@@ -12,8 +14,9 @@ This file supplements the original master prompt with the user's latest instruct
 | 3 | Real downloaded local Ollama model, validated explanations and error/cancel handling | Complete |
 | 4 | Full-flow verification, security boundary checks, desktop/mobile polish | Complete |
 | 5 | Reproducible setup, dependencies/licenses, baseline demo/rehearsal and free-only CI preparation | Complete — local checks verified; hosted CI gated off/unverified |
-| Mobile transition | iPhone Expo app, local PDF parsing, existing comparison/privacy flow and paired Mac AI | Complete for the bounded demo — native simulator verified; physical iPhone login/Camera/Files rehearsal remains |
+| Mobile transition | Standalone iPhone app with local PDFs and bundled Qwen | Release/simulator verification passed; physical install deferred by user; Mac is demo target |
 | 6 | Selected Schengen application review, Proof Mode, purpose-specific AI Context Firewall and verification | Planned — official reference inspected; wait for phase instruction |
+| 7 | Ten presentation locales, unsupported-input UX and optional verified-free event Featherless | Planned — first English/Spanish/Hindi/Simplified Chinese; wait for separate instruction |
 
 Original phases 0–5 remain intact; Phase 6 is explicitly in the plan. Latest user correction: visa paperwork is part of the intended application; the existing two-template demo is only a baseline. Current code does not yet support visas. Broader product features stay future work. The original master prompt's automatic-continuation language is superseded by the user's one-phase rule.
 
@@ -32,7 +35,7 @@ Stop after Phase 5. Do not automatically implement Phase 6 or cloud integration.
 
 ## Phase 6 — visa-paperwork review, Proof Mode and AI Context Firewall
 
-Platform prerequisite: finish the separately scoped iPhone mobile transition requested after Phase 5. Phase 6 should build on that interface and reuse the shared comparison/minimization rules. The previous web baseline is not proof of iPhone behavior. Do not start visa/Proof Mode automatically while doing mobile work.
+Platform: latest user chose the working Mac interface for the hackathon. Phase 6 should extend that interface and shared comparison/minimization rules. Preserve the simulator-tested native implementation; do not resume phone installation or start Phase 7 automatically.
 
 Use the already read/visually inspected FormBridge_Unique_Feature.pdf, docs/FUTURE-FEATURES.md and docs/VISA-WORKFLOW.md plus the user's explicit visa-support correction. The previous 60–90-minute estimate covered Proof Mode only. Allow approximately 2–3 hours for the bounded visa adapter, purpose policies and verification, subject to the actual remaining event time and extraction results. This is an estimate, not a tested completion time. Prioritize the real visa missing/name-conflict/privacy demonstration; cut optional cloud and extra fields first. No accounts, database, voice or enterprise integrations. Generic arbitrary-document parsing/OCR is not automatically included.
 
@@ -44,7 +47,7 @@ The user expects help with visa paperwork and other difficult documents and dele
 - Extract supported fields locally with true page/source evidence and manual confirmation. If only one document is present, distinguish within-document missing/invalid fields from cross-document comparison, which requires a supported second document. Do not force bank/account fields onto a visa form or invent missing comparison evidence.
 - Define comparisons and required-field checks for the selected workflow. Explicitly report unsupported editions/structures; do not claim authenticity, fraud detection or eligibility decisions.
 - Preserve the existing intake/statement demonstration and regression coverage. New visa support must be real parsed-file behavior, not hardcoded filename results or an AI guessing the document.
-- Preserve raw-document exclusion from model input, including passport/visa numbers, DOB, names, nationality and other literal personal fields. Construct only bounded derived facts approved for the selected purpose.
+- Preserve raw document exclusion from model input, including passport/visa numbers, DOB, names, nationality and other literal personal fields. Construct only bounded derived facts approved for the selected purpose.
 - If the requested visa is an image/scan, record the current OCR gap and evaluate a bounded local extraction path as part of the scope decision. Do not silently upload the image to a vision model or claim scans work when only text PDFs were tested.
 
 ### Proof Mode and boundary work
@@ -59,7 +62,7 @@ The user expects help with visa paperwork and other difficult documents and dele
 
 ### Provider choice and sponsor resources
 
-Local Ollama is already working and remains available. **Local or verified free sponsor cloud access is acceptable for the hackathon if needed.** The user corrected the earlier suggestion to save event perks for future use. Cloud is not a prerequisite for Proof Mode and is not currently implemented.
+Latest user now chooses Mac demo and asks to take advantage of verified-free Featherless. Local Ollama/Qwen is the working baseline. Featherless is planned in separate Phase 7 after credential/free-only readiness verification, without weakening minimization or enabling paid usage. It is not a prerequisite for visa/Proof Mode and is not implemented. The user corrected the earlier suggestion to save event perks for future use. Cloud is not a prerequisite for Proof Mode and is not currently implemented.
 
 If a real need for cloud arises during Phase 6, use only available redeemed access with verified free limits. Optional cloud integration was estimated at an additional 1–2 hours; it is not included in the 60–90-minute local feature estimate. Do not let unavailable credentials or quota consume the feature budget: time-box access troubleshooting to 15 minutes and continue with Ollama. Do not claim an advertised API key, access offer or free quota is already usable.
 
@@ -70,3 +73,11 @@ Any cloud path must use server-side credentials, an allowlisted destination, exp
 Read AGENTS.md, docs/PROJECT-CONTEXT.md, docs/DECISIONS.md, docs/PROGRESS.md, this plan and the original docs/MASTER-PROMPT.txt. Read FUTURE-FEATURES.md and VISA-WORKFLOW.md before Phase 6 and HACKATHON-RESOURCES.md before considering sponsor access. Inspect Git status/remotes and actual app/model availability; session IDs alone are not proof a process still runs.
 
 Current baseline: Phase 5 complete for the originally bounded demo, 82 automated tests and 25 browser checks rerun/passed, production build passed, actual local Ollama responses verified. README, DEPENDENCIES and DEMO provide the setup and baseline handoff. This does not mean the newly clarified visa-document requirement is implemented. CI is prepared, manual-only and gated off; free billing allowance was inaccessible with existing token scope, so no hosted run was made. Private repository: https://github.com/SaiKarawalla/document-review-hackathon. Native target: Expo Go on iPhone, see MOBILE.md; web baseline remains http://127.0.0.1:8787. Native checkpoint verified 93 core tests, two native test cases across rehearsals, typechecks/lint and iOS bundle export; physical phone remains unverified. Next phase is **6, only when the user requests it**; selected Schengen reference is ready locally.
+
+## Phase 7 — hackathon presentation languages and sponsor runtime
+
+Planning request only, execute on a separate user instruction after the Phase 6 checkpoint. Target ten presentation locales: English, Spanish, Hindi, Simplified Chinese, French, Portuguese, Arabic, German, Japanese, Korean. Prioritize the first four, then the remaining six only after keys/layout/wording checks. Preserve original source text and deterministic findings; interface language is not document-adapter support. Map validated canonical AI sentences to reviewed display translations with honest labels; no raw documents/fields go to translation AI. Do not claim fresh multilingual model generation without per-language real inference checks.
+
+Use the screenshot’s one-month Featherless participant offer when actual event access, API key, expiry and a hard no-paid boundary are verified. Same explicit minimized exact-body approval, fixed cloud destination, server-side key and semantic output constraints as local. Quota/expiry failures stop cloud and offer a freshly approved local request, never silent fallback/top-up. No unavailable offer is claimed as an enabled integration. Keep no-spending rule and local demo.
+
+Explicitly rehearse drawing image/PDF and random/unsupported edition rejection before AI, with clear localized accepted-format messages. Existing rejection paths already work; specific drawing fixture not yet tested. Detailed acceptance/time estimates and official sources: LANGUAGES-AND-SPONSOR-PLAN.md. This is hackathon work, not post-event funding. No new phase started by saving this plan.
